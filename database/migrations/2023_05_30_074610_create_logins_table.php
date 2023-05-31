@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('email');
             $table->string('password');
+            $table->unsignedInteger('role')->comment('0-admin,1-creator,2-client');
             $table->unsignedInteger('idUser');
+            $table->boolean('isActive')->default(0);
             $table->foreign('idUser')->references('id')
             ->on('users')->onDelete('cascade')
             ->onUpdate('cascade');

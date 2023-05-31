@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('user.login.index');
+
+// Login
+Route::group(['controller' => LoginController::class],function(){
+    Route::get('/','index')->name('login');
+    Route::post('/','login')->name('loginAction');
+    Route::get('/signup','signup')->name('signup');
+    Route::post('/signup','signupAction')->name('signupAction');
+    Route::get('/active/{token}','active')->name('active');
 });
-Route::get('/signup', function () {
-    return view('user.login.signup');
-});
+Route::get('/home',function(){
+    return view('welcome');
+})->name('home');

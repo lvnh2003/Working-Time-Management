@@ -17,12 +17,12 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="register.html">
+                    <a href="{{route('signup')}}">
                         <i class="material-icons">person_add</i> Register
                     </a>
                 </li>
                 <li class=" active ">
-                    <a href="login.html">
+                    <a href="{{route('login')}}">
                         <i class="material-icons">fingerprint</i> Login
                     </a>
                 </li>

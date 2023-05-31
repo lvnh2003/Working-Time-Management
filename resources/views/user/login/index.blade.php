@@ -6,7 +6,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                        <form method="#" action="#">
+                        <form method="POST" action="{{route('loginAction')}}">
+                            @csrf
                             <div class="card card-login">
                                 <div class="card-header text-center" data-background-color="rose">
                                     <h4 class="card-title">Login</h4>
@@ -28,38 +29,37 @@
                                 <div class="card-content">
                                     <div class="input-group">
                                         <span class="input-group-addon">
-                                            <i class="material-icons">face</i>
-                                        </span>
-                                        <div class="form-group label-floating is-empty">
-                                            <label class="control-label">First Name</label>
-                                            <input type="text" class="form-control">
-                                            <span class="material-input"></span>
-                                        </div>
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
                                             <i class="material-icons">email</i>
                                         </span>
                                         <div class="form-group label-floating is-empty">
-                                            <label class="control-label">Email address</label>
-                                            <input type="email" class="form-control">
+                                            <label class="control-label">メールアドレス</label>
+                                            <input type="email" class="form-control" name="email">
                                             <span class="material-input"></span>
                                         </div>
+                                        @error('email')
+                                        <div class="text-danger text-center">{{ $message }}</div>
+                                    @enderror
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon">
                                             <i class="material-icons">lock_outline</i>
                                         </span>
                                         <div class="form-group label-floating is-empty">
-                                            <label class="control-label">Password</label>
-                                            <input type="password" class="form-control">
+                                            <label class="control-label">パスワード</label>
+                                            <input type="password" class="form-control" name="password">
                                             <span class="material-input"></span>
                                         </div>
+                                        @error('password')
+                                        <div class="text-danger text-center">{{ $message }}</div>
+                                    @enderror
                                     </div>
                                 </div>
                                 <div class="footer text-center">
                                     <button type="submit" class="btn btn-rose btn-simple btn-wd btn-lg">Let's go</button>
                                 </div>
+                                @error('errorLogin')
+                                    <div class="text-danger text-center">{{ $message }}</div>
+                                @enderror
                             </div>
                         </form>
                     </div>

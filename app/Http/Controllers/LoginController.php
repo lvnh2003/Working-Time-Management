@@ -69,7 +69,7 @@ class LoginController extends Controller
             $userLogin = Login::where('idUser', $user->id)->first();
             $userLogin->update(['isActive' => 1]);
             if (Auth::loginUsingId($userLogin->id)) {
-                return redirect()->route('signup');
+                return redirect()->route('login');
             }
         }
     }

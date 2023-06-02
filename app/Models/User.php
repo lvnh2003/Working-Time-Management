@@ -17,4 +17,8 @@ class User extends Authenticatable
         'name',
         'image'
     ];
+    public function getAvatar()
+    {
+        return asset('storage/users-avatar').'/'.$this->image;
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +25,14 @@ Route::group(['controller' => LoginController::class],function(){
     Route::post('/signup','signupAction')->name('signupAction');
     Route::get('/active/{token}','active')->name('active');
 });
-Route::get('/home',function(){
-    return view('welcome');
-})->name('home');
+Route::group(['controller' => UserController::class],function(){
+    Route::get('/home','index')->name('home');
+    Route::post('/home/{id}','update')->name('user.update');
+});
+Route::group(['controller' => ProjectController::class, 'prefix' => 'project', 'as' => 'project.'], function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/store','store')->name('store');
+    Route::put('/update/{id}', 'update')->name('update');
+    Route::put('/updateValue/{id}', 'updateValue')->name('updateValue');
+    Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+});

@@ -17,6 +17,10 @@ class User extends Authenticatable
         'name',
         'image'
     ];
+    public function login()
+    {
+        return $this->hasOne(Login::class,'idUser','id');
+    }
     public function getAvatar()
     {
         return asset('storage/users-avatar').'/'.$this->image;

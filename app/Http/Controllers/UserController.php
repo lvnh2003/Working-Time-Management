@@ -11,7 +11,7 @@ class UserController extends Controller
     public function index()
     {
         $user = User::find(Auth::user()->id);
-        return view('index', ['user' => $user]);
+        return view('user.index', ['user' => $user]);
     }
     public function update(Request $request, $id)
     {

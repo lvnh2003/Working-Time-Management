@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
@@ -25,10 +26,12 @@ Route::group(['controller' => LoginController::class],function(){
     Route::post('/signup','signupAction')->name('signupAction');
     Route::get('/active/{token}','active')->name('active');
 });
+// user
 Route::group(['controller' => UserController::class],function(){
     Route::get('/home','index')->name('home');
     Route::post('/home/{id}','update')->name('user.update');
 });
+// project
 Route::group(['controller' => ProjectController::class, 'prefix' => 'project', 'as' => 'project.'], function () {
     Route::get('/', 'index')->name('index');
     Route::post('/store','store')->name('store');
@@ -36,3 +39,15 @@ Route::group(['controller' => ProjectController::class, 'prefix' => 'project', '
     Route::put('/updateValue/{id}', 'updateValue')->name('updateValue');
     Route::delete('/destroy/{id}', 'destroy')->name('destroy');
 });
+// admin
+Route::group(['controller' => AdminController::class,'prefix'=>'admin','as'=>'admin.'],function(){
+    Route::get('/',function(){
+        return view('admin.index');
+    })->name('index');
+    Route::get('/getUser','getAllUsers')->name('getAllUsers');
+    Route::get('/customer','customer')->name('customer');
+    Route::get('/customer/create','create')->name('customer.create');
+    Route::post('/customer/create','storeCustomer')->name('customer.store');
+    Route::get('/active/{token}','active')->name('customer.active');
+});
+

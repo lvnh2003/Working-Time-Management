@@ -21,8 +21,17 @@ class User extends Authenticatable
     {
         return $this->hasOne(Login::class,'idUser','id');
     }
+    public function getProject()
+    {
+        return $this->hasMany(Project::class,'idClient','id');
+    }
     public function getAvatar()
     {
         return asset('storage/users-avatar').'/'.$this->image;
     }
+    public function getProjectOfCreator()
+    {
+        return $this->hasMany(Project_creator::class,'idCreator','id');
+    }
+    
 }

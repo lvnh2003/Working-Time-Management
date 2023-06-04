@@ -33,9 +33,9 @@ Route::group(['controller' => UserController::class],function(){
 });
 // project
 Route::group(['controller' => ProjectController::class, 'prefix' => 'project', 'as' => 'project.'], function () {
-    Route::get('/', 'index')->name('index');
+    Route::get('/{id}', 'index')->name('index');
     Route::post('/store','store')->name('store');
-    Route::put('/update/{id}', 'update')->name('update');
+    Route::post('/update/{id}', 'update')->name('update');
     Route::put('/updateValue/{id}', 'updateValue')->name('updateValue');
     Route::delete('/destroy/{id}', 'destroy')->name('destroy');
 });
@@ -49,5 +49,15 @@ Route::group(['controller' => AdminController::class,'prefix'=>'admin','as'=>'ad
     Route::get('/customer/create','create')->name('customer.create');
     Route::post('/customer/create','storeCustomer')->name('customer.store');
     Route::get('/active/{token}','active')->name('customer.active');
+    Route::get('/project/create','createProject')->name('project.create');
+    Route::post('/project/create','storeProject')->name('project.store');
+
+    Route::get('/project/detail/{idProject}/{idCreator}','detail')->name('project.detail');
+    Route::get('project/listCreator/{id}','listCreator')->name('project.listCreator');
+    // get each project
+    Route::get('project/{id}','getProject')->name('project.get');
+
+    Route::get('project/assign/{id}','assign')->name('project.assign');
+    Route::post('project/assign/{id}','assignCreator')->name('project.assign.create');
 });
 

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project_creator;
 use App\Models\Save_time;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index($id)
     {
         $events = array();
-        $times = Save_time::all();
+        $times = Save_time::whereHas('getRelate',function($query) use ($id)
+        {
+            $query->where('idCreator',Auth::user()->id)->where('idProject',$id);
+        })->get();
         foreach ($times as $time) {
 
             $events[] = [
@@ -19,9 +24,11 @@ class ProjectController extends Controller
                 'hour' => $time->hour,
                 'start' => $time->start_date,
                 'end' => $time->end_date,
+                'idWork'=>$time->idWork
             ];
         }
-        return view('user.project.index', ['events' => $events]);
+        $idWork= Project_creator::where('idProject',$id)->where('idCreator',Auth::user()->id)->first()->id;
+        return view('user.project.index', ['events' => $events,'id' => $idWork]);
     }
     public function store(Request $request)
     {
@@ -31,6 +38,7 @@ class ProjectController extends Controller
             'title' => $request->title,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
+            'idWork'=>$request->idWork
         ]);
 
         return response()->json([
@@ -39,6 +47,7 @@ class ProjectController extends Controller
             'end' => $time->end_date,
             'hour' => $request->hour,
             'title' => $request->title,
+            'idWork'=>$request->idWork
             // 'color' => $color ? $color: '',
 
         ]);

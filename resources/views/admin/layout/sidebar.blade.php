@@ -16,7 +16,7 @@ Tip 3: you can change the color of the sidebar with data-background-color="white
         data-ps-id="6f1874f3-df21-9116-baf1-656ebd153405">
         <div class="user">
             <div class="photo">
-                <img src="../assets/img/faces/avatar.jpg">
+                <img src="{{asset('/assets/img/faces/avatar.jpg')}}">
             </div>
             <div class="info">
                 <a data-toggle="collapse" href="#collapseExample" class="collapsed">
@@ -36,7 +36,7 @@ Tip 3: you can change the color of the sidebar with data-background-color="white
                     <p> クリエイター管理 </p>
                 </a>
             </li>
-            <li  class="{{Route::currentRouteName() == ('admin.customer') ? "active" : "" }}">
+            <li  class="{{Route::currentRouteName() == ('admin.customer')? "active" : "" }}">
                 <a href="{{route('admin.customer')}}">
                     <i class="material-icons ">
                         groups
@@ -53,5 +53,5 @@ Tip 3: you can change the color of the sidebar with data-background-color="white
             <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 483px;"></div>
         </div>
     </div>
-    <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-1.jpg) "></div>
+    <div class="sidebar-background" style="background-image: url('{{asset('/assets/img/sidebar-1.jpg')}}') "></div>
 </div>

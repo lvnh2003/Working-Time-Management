@@ -133,9 +133,6 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="row">
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -194,15 +191,8 @@
     <script>
         let table = new DataTable('#datatables', {
             responsive: true,
-            // dom: 'lrtip',
             processing: true,
             serverSide: true,
-    //         paginate: {
-    //     "first":      "First",
-    //     "last":       "Last",
-    //     "next":       "Next",
-    //     "previous":   "Previous"
-    // },
             ajax: "{{ route('admin.getAllUsers') }}",
             columns: [{
                     data: 'avatar',

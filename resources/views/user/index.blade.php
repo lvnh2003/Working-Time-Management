@@ -148,16 +148,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($user->getProjectOfCreator as $relate)
+                                                
+                                            
                                             <tr>
                                                 
-                                                <td>Dakota Rice</td>
-                                                <td>$36,738</td>
-                                                <td>Niger</td>
+                                                <td>{{$relate->getProject->name}}</td>
+                                                <td>{{$relate->getProject->getClient->name}}</td>
+                                                <td>{{$relate->getTime()}}</td>
                                                 <td>
-                                                    <a href="{{route('project.index')}}" class="btn btn-success">Detail</a>
+                                                    <a href="{{route('project.index',$relate->getProject->id)}}" class="btn btn-success">Detail</a>
                                                 </td>
                                             </tr>
-                                           
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -190,7 +193,6 @@
 
                 if (name) {
                     var formData = new FormData();
-                    formData.append('_method', 'PUT');
                     formData.append('name', name);
                     if (image) {
                         formData.append('image', image);

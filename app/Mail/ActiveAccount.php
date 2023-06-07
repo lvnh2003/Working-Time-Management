@@ -13,10 +13,11 @@ class ActiveAccount extends Mailable
     /**
      * Create a new message instance.
      */
-    public $link;
-    public function __construct($link)
+    public $link,$user;
+    public function __construct($link,$user)
     {
         $this->link = $link;
+        $this->user = $user;
     }
     /**
      * Build the message.
@@ -25,7 +26,7 @@ class ActiveAccount extends Mailable
      */
     public function build()
     {
-        return $this->view('user.login.sendMail')
-            ->from('lanhnn.21it@vku.udn.vn', 'nguyenngoclanh');
+        return $this->view('user.login.sendMail')->subject('タレントマネジメントシステム登録完了のお知らせ')
+            ->from('lanhnn.21it@vku.udn.vn', '人的資源管理');
     }
 }

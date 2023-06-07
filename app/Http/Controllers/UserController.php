@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->idUser);
         return view('user.index', ['user' => $user]);
     }
     public function update(Request $request, $id)

@@ -1,4 +1,11 @@
 @extends('user.layout.main')
+@push('css')
+    <style>
+        body{
+        overflow-y: hidden
+       }
+    </style>
+@endpush
 @section('content')
     <div class="full-page login-page" filter-color="black" data-image="../../assets/img/login.jpeg">
         <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
@@ -10,7 +17,7 @@
                             @csrf
                             <div class="card card-login">
                                 <div class="card-header text-center" data-background-color="rose">
-                                    <h4 class="card-title">Login</h4>
+                                    <h4 class="card-title">ログイン</h4>
                                     <div class="social-line">
                                         <a href="#btn" class="btn btn-just-icon btn-simple">
                                             <i class="fa fa-facebook-square"></i>
@@ -24,7 +31,10 @@
                                     </div>
                                 </div>
                                 <p class="category text-center">
-                                    Or Be Classical
+                                    <a  href="{{route('signup')}}">
+                                        又はサインアップ
+                                    </a>
+                                    
                                 </p>
                                 <div class="card-content">
                                     <div class="input-group">
@@ -55,7 +65,7 @@
                                     </div>
                                 </div>
                                 <div class="footer text-center">
-                                    <button type="submit" class="btn btn-rose btn-simple btn-wd btn-lg">Let's go</button>
+                                    <button type="submit" class="btn btn-rose btn-simple btn-wd btn-lg">ログイン</button>
                                 </div>
                                 @error('errorLogin')
                                     <div class="text-danger text-center">{{ $message }}</div>
@@ -66,41 +76,6 @@
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Company
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Portofolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Blog
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    ©
-                    <script>
-                        document.write(new Date().getFullYear())
-                    </script>2023
-                    <a href="http://www.creative-tim.com"> Creative Tim </a>, made with love for a better web
-                </p>
-            </div>
-        </footer>
         <div class="full-page-background" style="background-image: url(../../assets/img/login.jpeg) "></div>
     </div>
 @endsection

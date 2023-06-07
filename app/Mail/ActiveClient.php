@@ -16,14 +16,16 @@ class ActiveClient extends Mailable
     /**
      * Create a new message instance.
      */
-    public $link;
-    public function __construct($link)
+    public $link,$user,$password;
+    public function __construct($link,$user,$password)
     {
         $this->link= $link;
+        $this->user= $user;
+        $this->password= $password;
     }
     public function build(){
-        return $this->view('user.login.sendMail')
-        ->from('lanhnn.21it@vku.udn.vn', 'nguyenngoclanh');
+        return $this->view('user.login.mailClient')->subject('タレントマネジメントシステム登録完了のお知らせ')
+        ->from('lanhnn.21it@vku.udn.vn', '人的資源管理');
     }
 
     

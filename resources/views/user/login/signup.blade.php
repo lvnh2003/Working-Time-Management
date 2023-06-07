@@ -1,64 +1,57 @@
 @extends('user.layout.main')
+@push('css')
+    <style>
+        .card .card-signup {
+            margin-bottom: 0
+        }
+
+        .register-page .card-signup {
+            padding: 0;
+            padding-top: 10px
+        }
+
+        body {
+            overflow-y: hidden
+        }
+    </style>
+@endpush
 @section('content')
     <div class="full-page register-page" filter-color="black" data-image="../../assets/img/register.jpeg">
         <div class="container">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="card card-signup">
-                        <h2 class="card-title text-center">Register</h2>
+                        <h2 class="card-title text-center">サインアップ</h2>
                         <div class="row">
                             <div class="col-md-5 col-md-offset-1">
                                 <div class="card-content">
                                     <div class="info info-horizontal">
                                         <div class="icon icon-rose">
-                                            <i class="material-icons">timeline</i>
+                                            <i class="material-icons">list</i>
                                         </div>
                                         <div class="description">
-                                            <h4 class="info-title">Marketing</h4>
+                                            <h4 class="info-title">条項 1</h4>
                                             <p class="description">
-                                                We've created the marketing campaign of the website. It was a very
-                                                interesting collaboration.
+                                                「プライバシーの権利が保護されます。お客様の個人情報は、法的要件に基づかない限り、
+                                                お客様の同意なしに第三者に開示されることはありません。」
                                             </p>
                                         </div>
                                     </div>
                                     <div class="info info-horizontal">
                                         <div class="icon icon-primary">
-                                            <i class="material-icons">code</i>
+                                            <i class="material-icons">list</i>
                                         </div>
                                         <div class="description">
-                                            <h4 class="info-title">Fully Coded in HTML5</h4>
+                                            <h4 class="info-title">条項 2</h4>
                                             <p class="description">
-                                                We've developed the website with HTML5 and CSS3. The client has access to
-                                                the code using GitHub.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="info info-horizontal">
-                                        <div class="icon icon-info">
-                                            <i class="material-icons">group</i>
-                                        </div>
-                                        <div class="description">
-                                            <h4 class="info-title">Built Audience</h4>
-                                            <p class="description">
-                                                There is also a Fully Customizable CMS Admin Dashboard for this product.
+                                                「当社のウェブサイトを利用する際には、法律に違反せず、情報の共有に対して責任を負います。違反行為や他のユーザーに害を与える場合、
+                                                当社はアカウントを削除する権利を有します。」
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <div class="social text-center">
-                                    <button class="btn btn-just-icon btn-round btn-twitter">
-                                        <i class="fa fa-twitter"></i>
-                                    </button>
-                                    <button class="btn btn-just-icon btn-round btn-dribbble">
-                                        <i class="fa fa-dribbble"></i>
-                                    </button>
-                                    <button class="btn btn-just-icon btn-round btn-facebook">
-                                        <i class="fa fa-facebook"> </i>
-                                    </button>
-                                    <h4> or be classical </h4>
-                                </div>
                                 <form class="form" method="POST" action="{{ route('signupAction') }}">
                                     @csrf
                                     <div class="card-content">
@@ -67,7 +60,7 @@
                                                 <i class="material-icons">face</i>
                                             </span>
                                             <div class="form-group is-empty"><input type="text" class="form-control"
-                                                    placeholder="First Name..." name="name"
+                                                    placeholder="クリエイター名..." name="name"
                                                     value="{{ old('name') }}"><span class="material-input"></span></div>
                                         </div>
                                         @error('name')
@@ -78,8 +71,8 @@
                                                 <i class="material-icons">email</i>
                                             </span>
                                             <div class="form-group is-empty"><input type="text" class="form-control"
-                                                    placeholder="Email..." name="email" value="{{ old('email') }}"><span
-                                                    class="material-input"></span></div>
+                                                    placeholder="メールアドレス..." name="email"
+                                                    value="{{ old('email') }}"><span class="material-input"></span></div>
                                         </div>
                                         @error('email')
                                             <div class="text-danger text-center">{{ $message }}</div>
@@ -88,8 +81,8 @@
                                             <span class="input-group-addon">
                                                 <i class="material-icons">lock_outline</i>
                                             </span>
-                                            <div class="form-group is-empty"><input type="password"
-                                                    placeholder="Password..." name="password" class="form-control"><span
+                                            <div class="form-group is-empty"><input type="password" placeholder="パスワード..."
+                                                    name="password" class="form-control"><span
                                                     class="material-input"></span></div>
                                         </div>
                                         @error('password')
@@ -106,7 +99,7 @@
                                         </div> --}}
                                     </div>
                                     <div class="footer text-center">
-                                        <input type="submit" class="btn btn-primary btn-round" value="SignUp">
+                                        <input type="submit" class="btn btn-primary btn-round" value="サインアップ">
                                     </div>
 
 
@@ -118,41 +111,6 @@
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Company
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Portofolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Blog
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    ©
-                    <script>
-                        document.write(new Date().getFullYear())
-                    </script>2023
-                    <a href="http://www.creative-tim.com"> Creative Tim </a>, made with love for a better web
-                </p>
-            </div>
-        </footer>
         <div class="full-page-background" style="background-image: url(../../assets/img/register.jpeg) "></div>
     </div>
 @endsection

@@ -33,5 +33,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project_creator::class,'idCreator','id');
     }
-    
+    public function getTotalTime($idProject)
+    {
+       $relate= Project_creator::where('idProject',$idProject)->where('idCreator',$this->id)->get();
+       $total=0;
+       foreach($relate as $item)
+       {
+        $total+=$item->getTime();
+       }
+       return $total;
+    }
 }

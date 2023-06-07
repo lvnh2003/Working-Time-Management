@@ -14,4 +14,23 @@ class Project extends Model
     {
         return $this->hasOne(User::class,'id','idClient');
     }
+    public function getRelate()
+    {
+        return $this->hasMany(Project_creator::class,'idProject','id');
+    }
+    public function getTotalTimeProject()
+    {
+        $project_creator = Project_creator::where('idProject',$this->id)->get();
+        $total=0;
+        foreach($project_creator as $item)
+        {
+            $times= Save_time::where('idWork',$item->id)->get();
+            foreach($times as $time)
+            {
+                $total+= $time->hour;
+            }
+
+        }
+        return $total;
+    }
 }

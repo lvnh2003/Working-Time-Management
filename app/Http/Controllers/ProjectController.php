@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Project_creator;
 use App\Models\Save_time;
 use Illuminate\Http\Request;
@@ -11,10 +12,11 @@ class ProjectController extends Controller
 {
     public function index($id)
     {
+        $project=Project::find($id);
         $events = array();
         $times = Save_time::whereHas('getRelate',function($query) use ($id)
         {
-            $query->where('idCreator',Auth::user()->id)->where('idProject',$id);
+            $query->where('idCreator',Auth::user()->idUser)->where('idProject',$id);
         })->get();
         foreach ($times as $time) {
 
@@ -27,8 +29,8 @@ class ProjectController extends Controller
                 'idWork'=>$time->idWork
             ];
         }
-        $idWork= Project_creator::where('idProject',$id)->where('idCreator',Auth::user()->id)->first()->id;
-        return view('user.project.index', ['events' => $events,'id' => $idWork]);
+        $idWork= Project_creator::where('idProject',$id)->where('idCreator',Auth::user()->idUser)->first()->id;
+        return view('user.project.index', ['events' => $events,'id' => $idWork,'project' => $project]);
     }
     public function store(Request $request)
     {
@@ -48,8 +50,6 @@ class ProjectController extends Controller
             'hour' => $request->hour,
             'title' => $request->title,
             'idWork'=>$request->idWork
-            // 'color' => $color ? $color: '',
-
         ]);
     }
     public function update(Request $request, $id)

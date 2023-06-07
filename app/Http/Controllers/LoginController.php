@@ -22,13 +22,18 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-        // dd($request);
+       
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-
             if (Auth::user()->isActive != 1) {
                 return redirect()->back()->withErrors(['errorLogin' => 'Tài khoản của bạn đã bị khóa!']);
             } else {
-                return redirect()->route('home');
+                if (Auth::user()->role == 1) {
+                    return redirect()->route('home');
+                } else if (Auth::user()->role == 2) {
+                    return redirect()->route('client.index');
+                } else {
+                    return redirect()->route('admin.index');
+                }
             }
         }
         return redirect()->back()->withErrors(['errorLogin' => 'Email hoặc mật khẩu không chính xác!']);
@@ -56,7 +61,7 @@ class LoginController extends Controller
             );
             // this route is link to active new account
             $route = route('active', $activeToken);
-            if (Mail::to($login->email)->send(new ActiveAccount($route))) {
+            if (Mail::to($login->email)->send(new ActiveAccount($route, $user))) {
                 return redirect()->route('login');
             }
         }

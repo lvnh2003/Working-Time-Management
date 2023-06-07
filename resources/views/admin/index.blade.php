@@ -92,7 +92,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header card-header-icon" data-background-color="purple">
+                            <div class="card-header card-header-icon" data-background-color="orange">
                                 <i class="material-icons">assignment</i>
                             </div>
                             <div class="card-content">
@@ -190,6 +190,36 @@
     </script>
     <script>
         let table = new DataTable('#datatables', {
+            language: {
+                "sEmptyTable": "データテーブルに利用できるデータがありません",
+                "sInfo": "_TOTAL_ 件中 _START_ から _END_ まで表示",
+                "sInfoEmpty": "0 件中 0 から 0 まで表示",
+                "sInfoFiltered": "（全 _MAX_ 件より抽出）",
+                "sInfoPostFix": "",
+                "sInfoThousands": ",",
+                "sLengthMenu": "_MENU_ 件表示",
+                "sLoadingRecords": "ローディング...",
+                "sProcessing": "処理中...",
+                "sSearch": "検索:",
+                "sZeroRecords": "一致するレコードがありません",
+                "oPaginate": {
+                    "sFirst": "最初",
+                    "sLast": "最後",
+                    "sNext": "次",
+                    "sPrevious": "前"
+                },
+                "oAria": {
+                    "sSortAscending": ": 昇順でソート",
+                    "sSortDescending": ": 降順でソート"
+                },
+                "select": {
+                    "rows": {
+                        "_": "%d 件のレコードが選択されています",
+                        "0": "",
+                        "1": "1 件のレコードが選択されています"
+                    }
+                }
+            },
             responsive: true,
             processing: true,
             serverSide: true,

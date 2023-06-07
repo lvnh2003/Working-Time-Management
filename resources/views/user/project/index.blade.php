@@ -24,26 +24,36 @@
         .fc-daygrid-event-harness {
             margin: 5px
         }
-        .fc-list-event-title{
+
+        .fc-list-event-title {
             width: 100%
         }
     </style>
 @endpush
 @section('content')
-@include('user.layout.navbar')
+    @include('user.layout.navbar')
     <div class="content">
         <div class="container-fluid">
             <div class="header text-center">
-                <h3 class="title">Project A</h3>
+                <h3 class="title">{{ $project->name }}</h3>
                 <p class="category">
-                    X company
-                    
+                    {{ $project->getClient->name }}
+
                 </p>
             </div>
 
             <div class="row">
+                <a type="button" href="{{ route('home') }}" class="btn-danger btn" style="float: left;margin-left: 125px">
+                    ホーム
+                    <span class="btn-label">
+                        <i class="material-icons">keyboard_return</i>
+                    </span>
+                </a>
                 <div class="col-md-3" style="margin: auto;float: right;margin-right: 114px">
-                    <input type="date" id="dateField" class="form-control"/>
+                    <h4 style="font-weight: bold" id="totalHour">
+
+                    </h4>
+                    <input type="date" id="dateField" class="form-control" />
                     <button type="button" id="dateBtn" class="btn-warning btn" style="float: right;">
                         検索
                         <span class="btn-label">
@@ -52,7 +62,6 @@
                     </button>
 
                 </div>
-
                 <div class="col-md-10 col-md-offset-1">
                     <div class="card card-calendar">
                         <div class="card-content">
@@ -78,8 +87,13 @@
             }
         });
 
+        var dateInput = $('#dateField');
+        var currentDate = moment().format('YYYY-MM-DD');
+        var nextDate = moment(currentDate).add(1, 'days').format('YYYY-MM-DD');
+        dateInput.val(currentDate);
         var times = @json($events);
-         var idWork= '{{$id}}';
+        var totalHour = $('#totalHour');
+        var idWork = {{ $id }};
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('fullCalendar');
 
@@ -90,12 +104,14 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
+                validRange: {
+                    end: nextDate // Ngày kết thúc hợp lệ
+                },
                 locale: 'ja',
                 initialView: 'dayGridMonth',
                 editable: true,
                 selectable: true, // allow "more" link when too many events
                 expandRows: true,
-                eventLimit: false,
                 events: times,
                 eventContent: function(arg) {
                     var title = arg.event.title;
@@ -103,10 +119,10 @@
 
                     var eventDivContent = document.createElement('div');
                     eventDivContent.classList.add('text-content');
-                    eventDivContent.textContent = "Nội dung"
+                    eventDivContent.textContent = "内容："
                     var eventDivHour = document.createElement('div');
                     eventDivHour.classList.add('text-content');
-                    eventDivHour.textContent = "Thời gian"
+                    eventDivHour.textContent = "時間："
                     var brItem = document.createElement('br');
                     var eventDiv = document.createElement('div');
 
@@ -114,7 +130,7 @@
                     var titleSpan = document.createElement('span');
                     titleSpan.title = title;
                     titleSpan.classList.add('fc-title');
-                    titleSpan.textContent = title.substring(0, 10) + '...';
+                    titleSpan.textContent = title.lenght > 10 ? title.substring(0, 10) + '...' : title
 
                     // Tạo phần tử span chứa mô tả
                     var hourSpan = document.createElement('span');
@@ -132,20 +148,26 @@
                     return {
                         domNodes: arrayOfDomNodes
                     }
+
                 },
                 // add new event
                 select: function(start) {
+                    var temporaryArg = {
+        view: null, // Giá trị view tùy thuộc vào hàm refreshTime của bạn
+        start: start.start,
+        end: start.end
+    };
                     swal({
                         type: 'info',
-                        title: 'Create an Event',
+                        title: '稼働時間を入力します。',
                         html: `<div class="card-content">
                         <div class="form-group label-floating">
                             
-                            <input class="form-control" name="title" type="text" email="true" placeholder="Content.." id="title" required="true" autocomplete="off">
+                            <input class="form-control" name="title" type="text" email="true" placeholder="内容.." id="title" required="true" autocomplete="off">
                         </div>
                         <div class="form-group label-floating">
                             
-                            <input class="form-control" name="hour" min="1" max="24" type="number" placeholder="Time.." required="true" id="hour" autocomplete="off">
+                            <input class="form-control" name="hour" min="1" max="24" type="number" placeholder="時間.." required="true" id="hour" autocomplete="off">
                         </div>
                         
                         
@@ -157,7 +179,7 @@
                     }).then((result) => {
                         var hour = $('#hour').val();
                         var title = $('#title').val();
-                    
+
                         var start_date = start.startStr;
                         var end_date = start.endStr;
                         $.ajax({
@@ -173,7 +195,7 @@
                             },
                             success: function(response) {
                                 calendar.addEvent({
-                                    'id':response.id,
+                                    'id': response.id,
                                     'title': response.title,
                                     'hour': response.hour,
                                     'start': response.start,
@@ -181,6 +203,7 @@
                                 })
 
                                 swal("Good job!", "Add time!", "success");
+                                refreshTime(temporaryArg);
                             },
                             error: function(error) {
                                 if (error.responseJSON.errors) {
@@ -210,11 +233,13 @@
                         },
                         success: function(response) {
                             swal("Good job!", "Event Updated!", "success");
+                            refreshTime(arg);
                         },
                         error: function(error) {
                             swal("Error!", error, "error");
                         },
                     });
+
                 },
 
                 eventClick: function(arg) {
@@ -249,13 +274,15 @@
                         }).then((result) => {
 
                             $.ajax({
-                                url: "{{ route('project.destroy', '') }}" + '/' + id,
+                                url: "{{ route('project.destroy', '') }}" +
+                                    '/' + id,
                                 type: "DELETE",
                                 dataType: 'json',
                                 success: function(response) {
                                     arg.event.remove();
                                     swal("Good job!", "Event Deleted!",
                                         "success");
+                                    refreshTime(arg);
                                 },
                                 error: function(error) {
                                     console.log(error)
@@ -293,11 +320,14 @@
                                     title,
                                 },
                                 success: function(response) {
-                                    arg.event.setProp('title', response.title);
-                                    arg.event.setExtendedProp('hour', response.hour);
-                                    
+                                    arg.event.setProp('title', response
+                                        .title);
+                                    arg.event.setExtendedProp('hour',
+                                        response.hour);
+
                                     swal("Good job!", "Update time!",
                                         "success");
+                                    refreshTime(arg);
                                 },
                                 error: function(error) {
                                     swal("Error!", error.message, "error");
@@ -307,14 +337,48 @@
                     })
 
                 },
+                datesSet: function(arg) {
+                    refreshTime(arg);
+                }
             });
 
             calendar.render();
+
+            function refreshTime(arg) {
+                var currentView = arg.view;
+                var monthView = arg.view.type === 'dayGridMonth';
+                if (monthView) {
+                    var date = new Date(dateInput.val());
+                    var month = date.getMonth() + 1
+                    var currentView = arg.view;
+                    var currentStart = currentView.currentStart;
+                    var currentEnd = currentView.currentEnd;
+                    totalHours = calculateTotalHours(currentStart, currentEnd);
+                    totalHour.text(month + 'ヶ月の合計時間: ' + totalHours + '時');
+                }
+            }
+
+            function calculateTotalHours(start, end) {
+                var events = calendar.getEvents(); // Lấy danh sách sự kiện hiện tại
+                var total = 0;
+
+                events.forEach(function(event) {
+                    if (event.extendedProps.hour) {
+                        // Kiểm tra sự kiện có trong khoảng thời gian của tháng hiện tại không
+                        if (event.start >= start && event.end <= end) {
+                            total += event.extendedProps.hour;
+                        }
+
+
+                    }
+                });
+
+                return total;
+            }
             // go to event wanna follow
             $(document).on('click', '#dateBtn', function() {
                 calendar.gotoDate($("#dateField").val());
             });
         });
-        
     </script>
 @endpush

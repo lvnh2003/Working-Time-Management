@@ -11,26 +11,21 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="../dashboard.html">
-                        <i class="material-icons">dashboard</i> Dashboard
-                    </a>
-                </li>
-                <li class="">
+                <li class="{{Route::currentRouteName() == ('signup') ? "active" : "" }}">
                     <a href="{{route('signup')}}">
-                        <i class="material-icons">person_add</i> Register
+                        <i class="material-icons">person_add</i> サインアップ
                     </a>
                 </li>
-                <li class=" active ">
+                <li class="{{Route::currentRouteName() == ('login') ? "active" : "" }}">
                     <a href="{{route('login')}}">
-                        <i class="material-icons">fingerprint</i> Login
+                        <i class="material-icons">fingerprint</i> ログイン
                     </a>
                 </li>
-                <li class="">
+                {{-- <li class="">
                     <a href="lock.html">
                         <i class="material-icons">lock_open</i> Lock
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

@@ -71,7 +71,7 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="about">
                                     <div class="row">
-                                        <h4 class="info-text"> Let's start with the basic information (with validation)</h4>
+                                        <h4 class="info-text">ここで個人情報を変更できます。</h4>
                                         <div class="col-sm-4 col-sm-offset-1">
                                             <div class="picture-container">
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -144,7 +144,7 @@
                                                 <th>プロジェクト名</th>
                                                 <th>会社名</th>
                                                 <th>合計時間</th>
-                                                <th>ディテール</th>
+                                                <th>アクション</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -157,7 +157,7 @@
                                                 <td>{{$relate->getProject->getClient->name}}</td>
                                                 <td>{{$relate->getTime()}}</td>
                                                 <td>
-                                                    <a href="{{route('project.index',$relate->getProject->id)}}" class="btn btn-success">Detail</a>
+                                                    <a href="{{route('project.index',$relate->getProject->id)}}" class="btn btn-success">ディテール</a>
                                                 </td>
                                             </tr>
                                             @endforeach

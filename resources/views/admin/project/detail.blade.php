@@ -1,17 +1,57 @@
 @extends('user.layout.main')
+@push('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+    <style>
+        .fc-event {
+            color: #fff;
+            padding: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            height: 100px;
+            width: 100%;
+        }
+
+        .control-label {
+            position: relative;
+            float: left;
+        }
+
+        .text-content {
+            float: left
+        }
+
+        .fc-daygrid-event-harness {
+            margin: 5px
+        }
+
+        .fc-list-event-title {
+            width: 100%
+        }
+    </style>
+@endpush
 @section('content')
     <div class="content">
         <div class="container-fluid">
             <div class="header text-center">
-                <h3 class="title">Project A</h3>
+                <h3 class="title">{{ $relate->getProject->name }}</h3>
                 <p class="category">
-                    X company
+                    {{ $relate->getProject->getClient->name }}
 
                 </p>
             </div>
-
+            
             <div class="row">
+                <a type="button" href="{{route('admin.index')}}" class="btn-danger btn" style="float: left;margin-left: 125px">
+                    ホーム
+                    <span class="btn-label">
+                        <i class="material-icons">keyboard_return</i>
+                    </span>
+                </a>
                 <div class="col-md-3" style="margin: auto;float: right;margin-right: 114px">
+                    <h4 style="font-weight: bold" id="totalHour">
+
+                    </h4>
                     <input type="date" id="dateField" class="form-control" />
                     <button type="button" id="dateBtn" class="btn-warning btn" style="float: right;">
                         検索
@@ -19,9 +59,10 @@
                             <i class="material-icons">search</i>
                         </span>
                     </button>
+                   
 
                 </div>
-
+                
                 <div class="col-md-10 col-md-offset-1">
                     <div class="card card-calendar">
                         <div class="card-content">
@@ -44,7 +85,12 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
+        var dateInput = $('#dateField');
+        var currentDate = moment().format('YYYY-MM-DD');
+        var nextDate = moment(currentDate).add(1, 'days').format('YYYY-MM-DD');
+        dateInput.val(currentDate);
+        var times = @json($events);
+        var totalHour = $('#totalHour');
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('fullCalendar');
 
@@ -56,25 +102,25 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 validRange: {
-    start: '2023-06-01', // Ngày bắt đầu hợp lệ
-    end: '2023-06-30' // Ngày kết thúc hợp lệ
-  },
+                    end: nextDate // Ngày kết thúc hợp lệ
+                },
                 locale: 'ja',
                 initialView: 'dayGridMonth',
                 editable: true,
                 selectable: true, // allow "more" link when too many events
                 expandRows: true,
                 eventLimit: false,
+                events: times,
                 eventContent: function(arg) {
                     var title = arg.event.title;
                     var hour = arg.event.extendedProps.hour;
 
                     var eventDivContent = document.createElement('div');
                     eventDivContent.classList.add('text-content');
-                    eventDivContent.textContent = "Nội dung"
+                    eventDivContent.textContent = "内容："
                     var eventDivHour = document.createElement('div');
                     eventDivHour.classList.add('text-content');
-                    eventDivHour.textContent = "Thời gian"
+                    eventDivHour.textContent = "時間："
                     var brItem = document.createElement('br');
                     var eventDiv = document.createElement('div');
 
@@ -101,104 +147,54 @@
                         domNodes: arrayOfDomNodes
                     }
                 },
-               
+
 
                 eventClick: function(arg) {
                     var id = arg.event.id;
                     swal({
-                        type: 'question',
+                        type: 'info',
                         html: `
-                        <div class="swal2-modal swal2-show" style="display: block; width: 500px; padding: 20px; background: rgb(255, 255, 255);">
-                            <h2>What do you want?</h2>
-                            <div class="swal2-content" style="display: block;">You will not be able to recover this imaginary file!</div>
+                        <div class="swal2-modal swal2-show" style="display: block; width: 200px; background: rgb(255, 255, 255);">
+                            <div class="swal2-content" style="display: block;font-weight:bold">仕事内容: <i class="text-warning"> ${arg.event.title}</i> </div>
+                            <div class="swal2-content" style="display: block;font-weight:bold">時間:  <i class="text-success"> ${arg.event.extendedProps.hour} 時</i></div>
                         </div>`,
-                        showCancelButton: true,
-                        confirmButtonClass: 'btn btn-primary',
-                        cancelButtonClass: 'btn btn-warning',
-                        confirmButtonText: 'Delete it!',
-                        cancelButtonText: "Update it!",
-                        buttonsStyling: false
-                    }).then((result) => {
-                        swal({
-                            type: 'warning',
-                            html: `
-                            <div class="swal2-modal swal2-show" style="display: block; width: 500px; padding: 20px; background: rgb(255, 255, 255);">
-                                <h2>What do you want?</h2>
-                                <div class="swal2-content" style="display: block;">You will not be able to recover this imaginary file!</div>
-                            </div>`,
-                            showCancelButton: true,
-                            confirmButtonClass: 'btn btn-success',
-                            cancelButtonClass: 'btn btn-danger',
-                            confirmButtonText: 'Yes, Delete it!',
-                            cancelButtonText: "No, keep it!",
-                            buttonsStyling: false
-                        }).then((result) => {
-
-                            $.ajax({
-                                url: "{{ route('project.destroy', '') }}" +
-                                    '/' + id,
-                                type: "DELETE",
-                                dataType: 'json',
-                                success: function(response) {
-                                    arg.event.remove();
-                                    swal("Good job!", "Event Deleted!",
-                                        "success");
-                                },
-                                error: function(error) {
-                                    console.log(error)
-                                },
-                            });
-                        });
-
-
-                    }).catch(() => {
-                        swal({
-                            type: 'info',
-                            title: 'Update an Event',
-                            html: `<div class="card-content">
-                                    <div class="form-group label-floating">
-                                        <input class="form-control" name="title" type="text" email="true" placeholder="Content.." id="title" required="true" autocomplete="off" value="${arg.event.title}">
-                                    </div>
-                                    <div class="form-group label-floating">
-                                        <input class="form-control" name="hour" min="1" max="24" type="number" placeholder="Time.." required="true" id="hour" autocomplete="off" value="${arg.event.extendedProps.hour}">
-                                    </div>
-                                </div>`,
-                            showCancelButton: true,
-                            confirmButtonClass: 'btn btn-success',
-                            cancelButtonClass: 'btn btn-danger',
-                            buttonsStyling: false
-                        }).then((result) => {
-                            var hour = $('#hour').val();
-                            var title = $('#title').val();
-                            $.ajax({
-                                url: "{{ route('project.update', '') }}" +
-                                    '/' + id,
-                                method: 'PUT',
-                                dataType: 'json',
-                                data: {
-                                    hour,
-                                    title,
-                                },
-                                success: function(response) {
-                                    arg.event.setProp('title', response
-                                        .title);
-                                    arg.event.setExtendedProp('hour',
-                                        response.hour);
-
-                                    swal("Good job!", "Update time!",
-                                        "success");
-                                },
-                                error: function(error) {
-                                    swal("Error!", error.message, "error");
-                                },
-                            });
-                        })
-                    })
-
+                       
+                    });
                 },
+                datesSet: function(arg) {
+                    var currentView = arg.view;
+                    var monthView = arg.view.type === 'dayGridMonth';
+                    if (monthView) {
+                        var date = new Date(dateInput.val());
+                        var month = date.getMonth() + 1
+                        var currentView = arg.view;
+                        var currentStart = currentView.currentStart;
+                        var currentEnd = currentView.currentEnd;
+                        totalHours = calculateTotalHours(currentStart, currentEnd);
+                        totalHour.text(month+'ヶ月の合計時間: '+ totalHours +'時');
+                    }
+                }
             });
 
             calendar.render();
+            function calculateTotalHours(start, end) {
+                console.log(start, end);
+                var events = calendar.getEvents(); // Lấy danh sách sự kiện hiện tại
+                var total = 0;
+
+                events.forEach(function(event) {
+                    if (event.extendedProps.hour) {
+                        // Kiểm tra sự kiện có trong khoảng thời gian của tháng hiện tại không
+                        if (event.start >= start && event.end <= end) {
+                            total += event.extendedProps.hour;
+                        }
+
+
+                    }
+                });
+
+                return total;
+            }
             // go to event wanna follow
             $(document).on('click', '#dateBtn', function() {
                 calendar.gotoDate($("#dateField").val());

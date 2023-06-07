@@ -615,7 +615,7 @@ demo = {
         }
     },
 
-    showSwal: function(type) {
+    showSwal: function(type,message) {
         if (type == 'basic') {
             swal({
                 title: "Here's a message!",
@@ -703,9 +703,9 @@ demo = {
 
         } else if (type == 'auto-close') {
             swal({
-                title: "Auto close alert!",
-                text: "I will close in 2 seconds.",
-                timer: 2000,
+                title: "探しています..!",
+                text: message,
+                timer: 1500,
                 showConfirmButton: false
             }).catch(swal.noop)
         } else if (type == 'input-field') {

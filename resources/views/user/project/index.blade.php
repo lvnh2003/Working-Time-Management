@@ -152,11 +152,6 @@
                 },
                 // add new event
                 select: function(start) {
-                    var temporaryArg = {
-        view: null, // Giá trị view tùy thuộc vào hàm refreshTime của bạn
-        start: start.start,
-        end: start.end
-    };
                     swal({
                         type: 'info',
                         title: '稼働時間を入力します。',
@@ -203,7 +198,7 @@
                                 })
 
                                 swal("Good job!", "Add time!", "success");
-                                refreshTime(temporaryArg);
+                                refreshTime();
                             },
                             error: function(error) {
                                 if (error.responseJSON.errors) {
@@ -233,7 +228,7 @@
                         },
                         success: function(response) {
                             swal("Good job!", "Event Updated!", "success");
-                            refreshTime(arg);
+                            refreshTime();
                         },
                         error: function(error) {
                             swal("Error!", error, "error");
@@ -338,41 +333,41 @@
 
                 },
                 datesSet: function(arg) {
-                    refreshTime(arg);
-                }
+                    refreshTime();
+                    
+                },
             });
 
             calendar.render();
 
-            function refreshTime(arg) {
-                var currentView = arg.view;
-                var monthView = arg.view.type === 'dayGridMonth';
+            function refreshTime() {
+
+                var currentView = calendar.view;
+                var monthView = calendar.view.type === 'dayGridMonth';
                 if (monthView) {
-                    var date = new Date(dateInput.val());
-                    var month = date.getMonth() + 1
-                    var currentView = arg.view;
+                    var month = (calendar.view.currentStart).getMonth()+1;
                     var currentStart = currentView.currentStart;
                     var currentEnd = currentView.currentEnd;
                     totalHours = calculateTotalHours(currentStart, currentEnd);
                     totalHour.text(month + 'ヶ月の合計時間: ' + totalHours + '時');
                 }
+
+
             }
 
             function calculateTotalHours(start, end) {
                 var events = calendar.getEvents(); // Lấy danh sách sự kiện hiện tại
                 var total = 0;
-
                 events.forEach(function(event) {
                     if (event.extendedProps.hour) {
                         // Kiểm tra sự kiện có trong khoảng thời gian của tháng hiện tại không
                         if (event.start >= start && event.end <= end) {
-                            total += event.extendedProps.hour;
+                            total += parseInt(event.extendedProps.hour);
                         }
 
 
                     }
                 });
-
                 return total;
             }
             // go to event wanna follow

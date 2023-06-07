@@ -17,10 +17,12 @@ class User extends Authenticatable
         'name',
         'image'
     ];
+    // get attributes login
     public function login()
     {
         return $this->hasOne(Login::class,'idUser','id');
     }
+    // get all project was managed by client
     public function getProject()
     {
         return $this->hasMany(Project::class,'idClient','id');
@@ -29,10 +31,12 @@ class User extends Authenticatable
     {
         return asset('storage/users-avatar').'/'.$this->image;
     }
+    // get all project creator is joined
     public function getProjectOfCreator()
     {
         return $this->hasMany(Project_creator::class,'idCreator','id');
     }
+    // get total time of project creator  joined
     public function getTotalTime($idProject)
     {
        $relate= Project_creator::where('idProject',$idProject)->where('idCreator',$this->id)->get();

@@ -17,16 +17,21 @@ class ClientController extends Controller
         $client = User::find(Auth::user()->idUser);
         return view('client.index',['client' => $client]);
     }
+    // get Total time of project from a past to this date 
     public function getTotalTimeWithDate($idUser,$idProject,$date)
     {
+        // get idWork for table save_time
         $relate = Project_creator::where('idCreator',$idUser)->where('idProject',$idProject)->first();
+        // get all columns has idWork
         $times= Save_time::where('idWork',$relate->id)->where('start_date','<=',$date)->get();
         $total=0;
+        // count time through props hour
         foreach($times as $time)
         {
             $total+=$time->hour;
         }
         $project_creator = Project_creator::where('idProject',$idProject)->get();
+        // total tile of project
         $totalTimeOfProject=0;
         foreach($project_creator as $item)
         {

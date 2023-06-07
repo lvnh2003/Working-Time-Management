@@ -162,21 +162,26 @@
                     });
                 },
                 datesSet: function(arg) {
-                    var currentView = arg.view;
-                    var monthView = arg.view.type === 'dayGridMonth';
-                    if (monthView) {
-                        var date = new Date(dateInput.val());
-                        var month = date.getMonth() + 1
-                        var currentView = arg.view;
-                        var currentStart = currentView.currentStart;
-                        var currentEnd = currentView.currentEnd;
-                        totalHours = calculateTotalHours(currentStart, currentEnd);
-                        totalHour.text(month+'ヶ月の合計時間: '+ totalHours +'時');
-                    }
+                    refreshTime();
                 }
             });
 
             calendar.render();
+            function refreshTime() {
+
+                var currentView = calendar.view;
+                var monthView = calendar.view.type === 'dayGridMonth';
+                if (monthView) {
+                    var month = (calendar.view.currentStart).getMonth()+1;
+                    var currentStart = currentView.currentStart;
+                    var currentEnd = currentView.currentEnd;
+                    totalHours = calculateTotalHours(currentStart, currentEnd);
+                    totalHour.text(month + 'ヶ月の合計時間: ' + totalHours + '時');
+                }
+
+
+            }
+
             function calculateTotalHours(start, end) {
                 console.log(start, end);
                 var events = calendar.getEvents(); // Lấy danh sách sự kiện hiện tại

@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('user.login.index');
+        return view('user.login.login');
     }
     public function signup()
     {
@@ -22,11 +22,13 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-       
+        //    check password and email
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // check creator is active account before
             if (Auth::user()->isActive != 1) {
                 return redirect()->back()->withErrors(['errorLogin' => 'Tài khoản của bạn đã bị khóa!']);
             } else {
+                // login with what role
                 if (Auth::user()->role == 1) {
                     return redirect()->route('home');
                 } else if (Auth::user()->role == 2) {
@@ -40,30 +42,38 @@ class LoginController extends Controller
     }
     public function signupAction(ValidateRequest $request)
     {
-        $activeToken = base64_encode($request->email);
-        // assign data equal request data
-        $data = $request->all();
-        $data['activeToken'] = $activeToken;
-        unset($data['password']);
-        // create user to save attibute
-        $userModel = new User();
-        $user = $userModel::create($data);
-        if ($user) {
-            $login = Login::create(
-                [
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'idUser' => $user->id,
-                    'role' => 1,
-                    'isActive' => 0
+        $check = User::where('email', $request->email)->first();
+        if (!$check) {
+            // hash email to create a token for creator active their account
+            $activeToken = base64_encode($request->email);
+            // declare data equal request data
+            $data = $request->all();
+            $data['activeToken'] = $activeToken;
+            unset($data['password']);
+            // create user to save attibute
+            $userModel = new User();
+            $user = $userModel::create($data);
+            if ($user) {
+                $login = Login::create(
+                    [
+                        'email' => $request->email,
+                        'password' => bcrypt($request->password),
+                        'idUser' => $user->id,
+                        // default just creator can signup
+                        'role' => 1,
+                        'isActive' => 0
 
-                ]
-            );
-            // this route is link to active new account
-            $route = route('active', $activeToken);
-            if (Mail::to($login->email)->send(new ActiveAccount($route, $user))) {
-                return redirect()->route('login');
+                    ]
+                );
+                // this route is link to active new account
+                $route = route('active', $activeToken);
+                // mail to create notification with a button active account
+                if (Mail::to($login->email)->send(new ActiveAccount($route, $user))) {
+                    return redirect()->route('login')->with('succes', '正常に登録するか、メールをチェックしてアカウントを確認します');
+                }
             }
+        } else {
+            return redirect()->back()->with('error', 'このメールアドレスはすでに使われています');
         }
     }
     // get a link from mail to active the account

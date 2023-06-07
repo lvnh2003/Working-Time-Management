@@ -10,14 +10,17 @@ class Project extends Model
     use HasFactory;
     
     protected $table='projects',$fillable = ['name','idClient'];
+    // get client who manage this project
     public function getClient()
     {
         return $this->hasOne(User::class,'id','idClient');
     }
+    // this function in order to get all the creator is joined
     public function getRelate()
     {
         return $this->hasMany(Project_creator::class,'idProject','id');
     }
+    // total time of this project
     public function getTotalTimeProject()
     {
         $project_creator = Project_creator::where('idProject',$this->id)->get();

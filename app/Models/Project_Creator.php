@@ -9,14 +9,17 @@ class Project_creator extends Model
 {
     use HasFactory;
     protected $fillable=['idProject','idCreator'];
+    // get creator with foreign key idCreator
     public function getCreator()
     {
         return $this->belongsTo(User::class, 'idCreator');
     }
+    // get Project with foreign key idProject
     public function getProject()
     {
         return $this->belongsTo(Project::class,'idProject');
     }
+    // get total time of creator with idWork, idWork is id of column have a idCreator and idProject 
     public function getTime()
     {
        $times=  $this->hasMany(Save_time::class,'idWork','id')->get();

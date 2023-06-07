@@ -16,6 +16,7 @@ class Login extends User
         'role',
         'isActive',
     ];
+    // get information of table user with foreign key idUser
     public function getUser()
     {   
         return $this->hasOne(User::class,'id','idUser');

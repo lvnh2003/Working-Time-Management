@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory,Notifiable;
     protected $table='users';
     protected $fillable=[
         'email',
@@ -28,8 +29,12 @@ class User extends Authenticatable
         return $this->hasMany(Project::class,'idClient','id');
     }
     public function getAvatar()
-    {
-        return asset('storage/users-avatar').'/'.$this->image;
+    {   
+        if($this->image)
+        {
+            return asset('storage/users-avatar').'/'.$this->image;
+        }
+        return null;
     }
     // get all project creator is joined
     public function getProjectOfCreator()

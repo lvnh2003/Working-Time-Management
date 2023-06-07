@@ -98,7 +98,7 @@
                                                                 <i class="material-icons">event_note</i>
                                                             </div>
                                                             <div class="card-content">
-                                                                <p class="category">Bookings</p>
+                                                                <p class="category">{{$project->getTotalTimeProject()}} 時間</p>
                                                                 <h3 class=  "card-title">{{ $project->name }}</h3>
                                                             </div>
                                                             <div class="card-footer">

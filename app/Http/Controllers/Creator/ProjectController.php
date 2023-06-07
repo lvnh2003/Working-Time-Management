@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Creator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\Project;
 use App\Models\Project_creator;
 use App\Models\Save_time;
@@ -12,9 +13,15 @@ use Illuminate\Support\Facades\Auth;
 class ProjectController extends Controller
 {
     // $id is idProject, creator is working in this project
-    public function index($id)
-    {
-        // 
+    public function index($id,$idNofication=null)
+    {   
+        if($idNofication)
+        {
+            $notification= Notification::find($idNofication);
+            $notification->update([
+                'read_at'=>now()
+            ]);
+        }
         $project = Project::find($id);
         $events = array();
         // get all events through table save_times, this table has idWork in order to find a column have

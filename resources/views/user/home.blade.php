@@ -77,7 +77,7 @@
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                                     <div class="fileinput-new img-no-padding">
                                                         {{--  --}}
-                                                        <img src=" {{ $user->getAvatar() ? $user->getAvatar() : '../../assets/img/default-avatar.png' }}"
+                                                        <img src=" {{ $user->getAvatar() ? $user->getAvatar() : $avatar_default }}"
                                                             alt="..." class="picture-src">
                                                     </div>
                                                     <div class="fileinput-preview picture-src"></div>

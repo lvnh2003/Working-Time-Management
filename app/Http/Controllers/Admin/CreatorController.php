@@ -33,7 +33,7 @@ class CreatorController extends Controller
                 return "<span >No assign </span>";
             })
             ->addColumn('avatar', function (User $user) {
-                return $user->getAvatar();
+                return $user->getAvatar()? $user->getAvatar() :asset('assets/img/default-avatar.png');
             })
             ->rawColumns(['project'])
             ->make(true);

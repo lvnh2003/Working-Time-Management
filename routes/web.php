@@ -40,6 +40,7 @@ Route::middleware('IsCreatorLogin')->group(function () {
     // project
     Route::group(['controller' => ProjectController::class, 'prefix' => 'project', 'as' => 'project.'], function () {
         Route::get('/{id}', 'index')->name('index');
+        Route::get('/{id}/{idNotification}', 'index')->name('index.notification');
         Route::post('/store', 'store')->name('store');
         Route::post('/update/{id}', 'update')->name('update');
         Route::put('/updateValue/{id}', 'updateValue')->name('updateValue');

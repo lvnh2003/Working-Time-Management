@@ -37,7 +37,6 @@
                                 <i class="material-icons">groups</i>
                             </span>
                             <div class="form-group label-floating is-empty">
-                              
                                 <label class="control-label" style="z-index: 100;">クライアント名</label>
                                 <select class="form-control" name="idClient" id="select-name">
                                     <option disabled="" selected="" value="0"></option>
@@ -49,7 +48,7 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">
-                                <i class="material-icons">email</i>
+                                <i class="material-icons">edit</i>
                             </span>
                             <div class="form-group label-floating is-empty">
                                 <label class="control-label" >プロジェクト名</label>
@@ -82,7 +81,7 @@
                 }
             );
             @if (session()->has('error'))
-                 swal("Error!", "{!! session()->get('error') !!}", "error");
+                 swal("Error!", "{!! session()->get('error') !!}", "warning");
             @endif  
             @error('name')
                 swal("Error!", "プロジェクトの名前を空白のままにしないでください", "warning");

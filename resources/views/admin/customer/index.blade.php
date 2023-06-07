@@ -65,11 +65,11 @@
             @if (session()->has('error'))
                  swal("Error!", "{!! session()->get('error') !!}", "error");
             @endif  
-            @error('email')
-                swal("Error!", "メールアドレスを入力してください", "error");
-            @enderror
             @error('password')
                 swal("Error!", "パスワードアドレスを入力してください", "error");
+            @enderror
+            @error('email')
+                swal("Error!", "メールアドレスを入力してください", "error");
             @enderror
 
         });

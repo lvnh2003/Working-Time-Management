@@ -120,11 +120,11 @@
                                                                 aria-label="Position: activate to sort column ascending"
                                                                 aria-sort="descending">名前</th>
                                                             <th class="sorting" tabindex="0" aria-controls="datatables"
-                                                                rowspan="1" colspan="1" style="width: 200px;"
+                                                                rowspan="1" colspan="1" style="width: 150px;"
                                                                 aria-label="Office: activate to sort column ascending">
                                                                 メール</th>
                                                             <th class="sorting" tabindex="0" aria-controls="datatables"
-                                                                rowspan="1" colspan="1" style="width: 200px;"
+                                                                rowspan="1" colspan="1" style="width: 300px;"
                                                                 aria-label="Age: activate to sort column ascending">プロジェクト
                                                             </th>
 
@@ -223,6 +223,7 @@
             responsive: true,
             processing: true,
             serverSide: true,
+            pageLength: 3,
             ajax: "{{ route('admin.getAllUsers') }}",
             columns: [{
                     data: 'avatar',

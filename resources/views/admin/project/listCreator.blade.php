@@ -70,7 +70,7 @@
                                                                                 <div class="card-avatar">
                                                                                     <a href="#pablo">
                                                                                         <img class="img"
-                                                                                            src="{{ $creator->getAvatar() }}">
+                                                                                            src="{{ $creator->getAvatar() ?  $creator->getAvatar()  :  $avatar_default}}">
                                                                                     </a>
                                                                                 </div>
                                                                                 <form

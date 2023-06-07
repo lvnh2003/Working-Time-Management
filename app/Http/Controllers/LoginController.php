@@ -14,6 +14,12 @@ class LoginController extends Controller
 {
     public function index()
     {
+        // create fake user
+        // $user = User::factory()->create();
+        // $login = Login::factory()->state([
+        //     'idUser' => $user->id,
+        //     'email' => $user->email
+        // ])->create();
         return view('user.login.login');
     }
     public function signup()

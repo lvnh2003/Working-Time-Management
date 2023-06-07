@@ -8,7 +8,9 @@ use App\Models\Project;
 use App\Models\Project_creator;
 use App\Models\Save_time;
 use App\Models\User;
+use App\Notifications\AssignNewProject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProjectController extends Controller
@@ -16,7 +18,7 @@ class ProjectController extends Controller
     public function create()
     {
         $clients =  Login::where('role', 2)->where('isActive', 1)->get();
-        return view('admin.project.index', ['clients' => $clients]);
+        return view('admin.project.add', ['clients' => $clients]);
     }
     public function store(Request $request)
     {
@@ -24,6 +26,11 @@ class ProjectController extends Controller
         if ($request->idClient === 0) {
             return back()->with('error', 'クライアントを選択してください');
         }
+        $project_name_exist = Project::where('idClient', $request->idClient)->where('name', $request->name)->first();
+        if ($project_name_exist) {
+            return back()->with('error', 'このプロジェクト名は使用されました');
+        }
+
         $request->validate(
             [
                 'idClient' => 'bail| required',
@@ -68,7 +75,7 @@ class ProjectController extends Controller
                 return $relate->getCreator->name;
             })
             ->addColumn('avatar', function (Project_creator $relate) {
-                return $relate->getCreator->getAvatar();
+                return $relate->getCreator->getAvatar() ? $relate->getCreator->getAvatar() : asset('assets/img/default-avatar.png');
             })
             ->make(true);
     }
@@ -78,7 +85,7 @@ class ProjectController extends Controller
         return response()->json($project);
     }
     public function assign($id)
-    {   
+    {
         // get all creator is joined
         $project_exist = Project_creator::where('idProject', $id)->get();
         // convert a array just have idCreator
@@ -90,13 +97,18 @@ class ProjectController extends Controller
         return view('admin.project.listCreator', ['creators' => $creators, 'id' => $id]);
     }
     public function assignCreator(Request $request, $id)
-    {   
+    {
         // create a relate between creator and project
         $pro_cre = new Project_creator();
-        $pro_cre->create([
+        $data = $pro_cre->create([
             'idProject' => $id,
             'idCreator' => $request->idCreator,
         ]);
+        if ($data) {
+            $notification = new AssignNewProject($data->getProject);
+            $notification->idProject = $data->getProject->id;
+            Notification::send($data->getCreator, $notification);
+        }
         return redirect()->route('admin.customer')->with('success', 'タスクを正常に割り当てる');
     }
     public function destroy($id)

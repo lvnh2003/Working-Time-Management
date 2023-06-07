@@ -181,7 +181,7 @@
 
                         // Thêm hình ảnh avatar vào phần tử người dùng
                         
-                        var userAvatar = $('<img>').attr('src', '{{ $relate->getCreator->getAvatar() }}').attr('alt',
+                        var userAvatar = $('<img>').attr('src', '{{ $relate->getCreator->getAvatar() ? $relate->getCreator->getAvatar() : $avatar_default }}').attr('alt',
                             'Avatar');
                         user.append(userAvatar);
 

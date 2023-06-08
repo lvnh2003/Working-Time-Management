@@ -33,10 +33,6 @@
     <div class="wrapper wrapper-full-page">
         <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
         @yield('content')
-        {{-- footer --}}
-
-
-        @include('user.layout.footer')
     </div>
 
 
@@ -74,8 +70,6 @@
     <script src="{{ asset('/assets') }}/js/sweetalert2.js"></script>
     <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
     <script src="{{ asset('/assets') }}/js/jasny-bootstrap.min.js"></script>
-    <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
-    <script src="{{ asset('/assets') }}/js/fullcalendar.min.js"></script>
     <!-- Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
     <script src="{{ asset('/assets') }}/js/jquery.tagsinput.js"></script>
     <!-- Material Dashboard javascript methods -->

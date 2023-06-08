@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="card-content">
-                        <h4 class="card-title">Tania Andrew</h4>
+                        <h4 class="card-title">クライアントの作成</h4>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <i class="material-icons">groups</i>
@@ -91,10 +91,6 @@
             @if (session()->has('error'))
                 swal("Error!", "{!! session()->get('error') !!}", "warning");
             @endif
-
-
-
-
         });
     </script>
 @endpush

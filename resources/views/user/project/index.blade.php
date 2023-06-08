@@ -77,7 +77,8 @@
     </div>
 @endsection
 @push('js')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script> --}}
+    <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+    <script src="{{ asset('/assets') }}/js/fullcalendar.min.js"></script>
     <script src="{{ asset('assets/js/ja.global.min.js') }}"></script>
 
     <script type="text/javascript">
@@ -202,11 +203,15 @@
                                 swal("完了!", "作品内容を追加!", "success");
                                 refreshTime();
                             },
-                            error: function(error) {
-                                if (error.responseJSON.errors) {
-                                    $('#titleError').html(error.responseJSON.errors
-                                        .title);
+                            error: function(xhr, status, error) {
+                                var errors = xhr.responseJSON.errors;
+                                var errorList = '<div>';
+                                for (var field in errors) {
+                                    errorList += '<span>' + errors[field][0] +
+                                        '</span> <br>';
                                 }
+                                errorList += '</div>';
+                                swal("過ち", errorList, "error");
                             },
                         })
                     }).catch((error) => {
@@ -279,7 +284,7 @@
                                     arg.event.remove();
                                     swal("完了!", "削除された作業内容!",
                                         "success");
-                                    refreshTime(arg);
+                                    refreshTime();
                                 },
                                 error: function(error) {
                                     console.log(error)
@@ -309,6 +314,7 @@
                         }).then((result) => {
                             var hour = $('#hour').val();
                             var title = $('#title').val();
+                            var type = "update";
                             $.ajax({
                                 url: "{{ route('project.update', '') }}" +
                                     '/' + id,
@@ -317,6 +323,7 @@
                                 data: {
                                     hour,
                                     title,
+                                    type
                                 },
                                 success: function(response) {
                                     arg.event.setProp('title', response
@@ -326,10 +333,19 @@
 
                                     swal("完了!", "更新されたジョブ内容!",
                                         "success");
-                                    refreshTime(arg);
+                                    refreshTime();
                                 },
-                                error: function(error) {
-                                    swal("Error!", error.message, "error");
+                                error: function(xhr, status, error) {
+                                    var errors = xhr.responseJSON.errors;
+                                    console.log(errors);
+                                    var errorList = '<div>';
+                                    for (var field in errors) {
+                                        errorList += '<span>' + errors[
+                                                field][0] +
+                                            '</span> <br>';
+                                    }
+                                    errorList += '</div>';
+                                    swal("過ち", errorList, "error");
                                 },
                             });
                         })

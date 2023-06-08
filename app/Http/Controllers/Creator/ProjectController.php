@@ -47,6 +47,18 @@ class ProjectController extends Controller
     }
     public function store(Request $request)
     {
+        $request->validate([
+            'title'=>'bail|required',
+            'hour'=>'bail|numeric|min:2|max:23|required'
+        ],
+        [
+            'title.required' => 'タスクの内容を入力してください',
+            'hour.required'=>'時間数を入力してください',
+            'min'=>'無効な時間',
+            'max'=>'無効な時間',
+            'numeric'=>'時間は数値でなければなりません'
+        ]
+        );
         // get a data from ajax
         $time = Save_time::create([
             'hour' => $request->hour,
@@ -67,12 +79,25 @@ class ProjectController extends Controller
     }
     public function update(Request $request, $id)
     {
+        
         // have two option update event
         $time = Save_time::find($id);
         if (!$time) {
             return response()->json(['error' => 'Can not update'], 404);
         }
-        if ($request->title) {
+        if ($request->type) {
+            $request->validate([
+                'title'=>'bail|required',
+                'hour'=>'bail|numeric|min:2|max:23|required'
+            ],
+            [
+                'title.required' => 'タスクの内容を入力してください',
+                'hour.required'=>'時間数を入力してください',
+                'min'=>'無効な時間',
+                'max'=>'無効な時間',
+                'numeric'=>'時間は数値でなければなりません'
+            ]
+            );
             $time->update(
                 [
                     'title' => $request->title,

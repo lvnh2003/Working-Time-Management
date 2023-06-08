@@ -40,9 +40,10 @@
 
                 </p>
             </div>
-            
+
             <div class="row">
-                <a type="button" href="{{route('admin.index')}}" class="btn-danger btn" style="float: left;margin-left: 125px">
+                <a type="button" href="{{ route('admin.index') }}" class="btn-danger btn"
+                    style="float: left;margin-left: 125px">
                     ホーム
                     <span class="btn-label">
                         <i class="material-icons">keyboard_return</i>
@@ -59,10 +60,10 @@
                             <i class="material-icons">search</i>
                         </span>
                     </button>
-                   
+
 
                 </div>
-                
+
                 <div class="col-md-10 col-md-offset-1">
                     <div class="card card-calendar">
                         <div class="card-content">
@@ -78,6 +79,8 @@
     </div>
 @endsection
 @push('js')
+    <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+    <script src="{{ asset('/assets') }}/js/fullcalendar.min.js"></script>
     <script src="{{ asset('assets/js/ja.global.min.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
@@ -158,7 +161,7 @@
                             <div class="swal2-content" style="display: block;font-weight:bold">仕事内容: <i class="text-warning"> ${arg.event.title}</i> </div>
                             <div class="swal2-content" style="display: block;font-weight:bold">時間:  <i class="text-success"> ${arg.event.extendedProps.hour} 時</i></div>
                         </div>`,
-                       
+
                     });
                 },
                 datesSet: function(arg) {
@@ -167,12 +170,13 @@
             });
 
             calendar.render();
+
             function refreshTime() {
 
                 var currentView = calendar.view;
                 var monthView = calendar.view.type === 'dayGridMonth';
                 if (monthView) {
-                    var month = (calendar.view.currentStart).getMonth()+1;
+                    var month = (calendar.view.currentStart).getMonth() + 1;
                     var currentStart = currentView.currentStart;
                     var currentEnd = currentView.currentEnd;
                     totalHours = calculateTotalHours(currentStart, currentEnd);

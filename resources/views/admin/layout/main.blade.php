@@ -31,10 +31,6 @@
         @include('admin.layout.sidebar')
         <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
         @yield('content')
-        {{-- footer --}}
-
-
-        @include('admin.layout.footer')
     </div>
 
 
@@ -66,14 +62,10 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
     <!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
     <script src="{{ asset('/assets') }}/js/jquery.select-bootstrap.js"></script>
-    <!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
-    <script src="{{ asset('/assets') }}/js/jquery.datatables.js"></script>
     <!-- Sweet Alert 2 plugin, full documentation here: https://limonte.github.io/sweetalert2/ -->
     <script src="{{ asset('/assets') }}/js/sweetalert2.js"></script>
     <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
     <script src="{{ asset('/assets') }}/js/jasny-bootstrap.min.js"></script>
-    <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
-    <script src="{{ asset('/assets') }}/js/fullcalendar.min.js"></script>
     <!-- Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
     <script src="{{ asset('/assets') }}/js/jquery.tagsinput.js"></script>
     <!-- Material Dashboard javascript methods -->

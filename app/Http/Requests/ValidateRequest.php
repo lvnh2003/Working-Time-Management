@@ -32,9 +32,8 @@ class ValidateRequest extends FormRequest
     {
         return [
 
-            'required' => 'Trường này không được bỏ trống',
-            'min' => 'Độ dài quá ngắn',
-            'confirmed' => 'Mật khẩu không trùng khớp',
+            'required' => '完全に入力してください',
+            'min' => '無効な長さ',
         ];
     }
 }

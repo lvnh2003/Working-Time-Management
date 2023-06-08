@@ -24,7 +24,7 @@
         }
 
         .button {
-            background-color: #3490dc;
+            background-color: #f5c730c9;
             border: none;
             color: #fff !important;
             padding: 10px 20px;
@@ -36,7 +36,7 @@
         }
 
         .button:hover {
-            background-color: #2779bd;
+            background-color: #ac8e2cc9;
         }
         .ii a[href]
         {
@@ -45,11 +45,10 @@
     </style>
 </head>
 <body>
-    <h1>ようこそ。</h1>
-    <p>{{ $user->name }}さん  </p>
-    <p>サービスに加入していただきありがとうございます</p>
+    <h1>こんにちは。</h1>
+    <p>パスワードを変更できます</p>
     <p>
-        <a href="{{ $link }}" class="button">マイアカウントを有効にする</a>
+        <a href="{{ $link }}" class="button">パスワードを変える</a>
     </p>
     <p>よろしくお願いします。</p>
 </body>

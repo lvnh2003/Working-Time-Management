@@ -1,4 +1,4 @@
-<div class="sidebar" data-active-color="rose" data-background-color="black" data-image="../assets/img/sidebar-1.jpg">
+<div class="sidebar" data-active-color="rose" data-background-color="black" data-image="{{asset('/assets/img/sidebar-1.jpg')}}">
     <!--
 Tip 1: You can change the color of active element of the sidebar using: data-active-color="purple | blue | green | orange | red | rose"
 Tip 2: you can also add an image using data-image tag
@@ -44,6 +44,14 @@ Tip 3: you can change the color of the sidebar with data-background-color="white
                     <p> クライアント管理</p>
                 </a>
             </li>
+            <li >
+                <a href="{{route('logout')}}">
+                    <i class="material-icons ">
+                        logout
+                        </i>
+                    <p> ログアウト</p>
+                </a>
+            </li>
             
         </ul>
         <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
@@ -53,5 +61,5 @@ Tip 3: you can change the color of the sidebar with data-background-color="white
             <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 483px;"></div>
         </div>
     </div>
-    <div class="sidebar-background" style="background-image: url('{{asset('/assets/img/sidebar-1.jpg')}}') "></div>
+    <div class="sidebar-background" style="background-image: url('{{asset('assets/img/sidebar-1.jpg')}}') "></div>
 </div>

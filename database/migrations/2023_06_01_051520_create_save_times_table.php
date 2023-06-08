@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->unsignedInteger('idWork');
-            $table->foreign('idWork')->references('id')->on('project_creators')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('idWork')->references('id')->on('project_creators')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

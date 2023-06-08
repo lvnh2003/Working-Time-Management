@@ -27,7 +27,7 @@
 
 <body class="off-canvas-sidebar sidebar-mini">
     {{-- header --}}
-    @if (Route::currentRouteName() == 'login' || Route::currentRouteName() == 'signup')
+    @if (Route::currentRouteName() == 'login' || Route::currentRouteName() == 'signup' || Route::currentRouteName() == 'forgot' || Route::currentRouteName() == 'reset')
         @include('user.layout.header')
     @endif
     <div class="wrapper wrapper-full-page">

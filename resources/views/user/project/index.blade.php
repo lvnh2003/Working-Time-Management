@@ -170,6 +170,8 @@
                         showCancelButton: true,
                         confirmButtonClass: 'btn btn-success',
                         cancelButtonClass: 'btn btn-danger',
+                        confirmButtonText: 'はい!',
+                        cancelButtonText: "滅ぼす!",
                         buttonsStyling: false
                     }).then((result) => {
                         var hour = $('#hour').val();
@@ -197,7 +199,7 @@
                                     'end': response.end,
                                 })
 
-                                swal("Good job!", "Add time!", "success");
+                                swal("完了!", "作品内容を追加!", "success");
                                 refreshTime();
                             },
                             error: function(error) {
@@ -227,7 +229,7 @@
                             end_date
                         },
                         success: function(response) {
-                            swal("Good job!", "Event Updated!", "success");
+                            swal("完了!", "更新されたジョブ内容!", "success");
                             refreshTime();
                         },
                         error: function(error) {
@@ -243,28 +245,28 @@
                         type: 'question',
                         html: `
                             <div class="swal2-modal swal2-show" style="display: block; width: 500px; padding: 20px; background: rgb(255, 255, 255);">
-                                <h2>What do you want?</h2>
-                                <div class="swal2-content" style="display: block;">You will not be able to recover this imaginary file!</div>
+                                <h2>何を達成したいですか?</h2>
+                                <div class="swal2-content" style="display: block;">不可逆的な変更後のコンテンツ!</div>
                             </div>`,
                         showCancelButton: true,
                         confirmButtonClass: 'btn btn-primary',
                         cancelButtonClass: 'btn btn-warning',
-                        confirmButtonText: 'Delete it!',
-                        cancelButtonText: "Update it!",
+                        confirmButtonText: '削除!',
+                        cancelButtonText: "更新!",
                         buttonsStyling: false
                     }).then((result) => {
                         swal({
                             type: 'warning',
                             html: `
                                 <div class="swal2-modal swal2-show" style="display: block; width: 500px; padding: 20px; background: rgb(255, 255, 255);">
-                                    <h2>What do you want?</h2>
-                                    <div class="swal2-content" style="display: block;">You will not be able to recover this imaginary file!</div>
+                                    <h2>確かですか?</h2>
+                                    <div class="swal2-content" style="display: block;">不可逆的な変更後のコンテンツ!</div>
                                 </div>`,
                             showCancelButton: true,
                             confirmButtonClass: 'btn btn-success',
                             cancelButtonClass: 'btn btn-danger',
-                            confirmButtonText: 'Yes, Delete it!',
-                            cancelButtonText: "No, keep it!",
+                            confirmButtonText: 'はい!',
+                            cancelButtonText: "滅ぼす!",
                             buttonsStyling: false
                         }).then((result) => {
 
@@ -275,7 +277,7 @@
                                 dataType: 'json',
                                 success: function(response) {
                                     arg.event.remove();
-                                    swal("Good job!", "Event Deleted!",
+                                    swal("完了!", "削除された作業内容!",
                                         "success");
                                     refreshTime(arg);
                                 },
@@ -288,19 +290,21 @@
 
                     }).catch(() => {
                         swal({
-                            type: 'info',
-                            title: 'Update an Event',
+                            type: 'warning',
+                            title: '作業内容の更新',
                             html: `<div class="card-content">
                                         <div class="form-group label-floating">
-                                            <input class="form-control" name="title" type="text" email="true" placeholder="Content.." id="title" required="true" autocomplete="off" value="${arg.event.title}">
+                                            <input class="form-control" name="title" type="text" placeholder="内容.." id="title" required="true" autocomplete="off" value="${arg.event.title}">
                                         </div>
                                         <div class="form-group label-floating">
-                                            <input class="form-control" name="hour" min="1" max="24" type="number" placeholder="Time.." required="true" id="hour" autocomplete="off" value="${arg.event.extendedProps.hour}">
+                                            <input class="form-control" name="hour" min="1" max="24" type="number" placeholder="時間.." required="true" id="hour" autocomplete="off" value="${arg.event.extendedProps.hour}">
                                         </div>
                                     </div>`,
                             showCancelButton: true,
                             confirmButtonClass: 'btn btn-success',
                             cancelButtonClass: 'btn btn-danger',
+                            confirmButtonText: 'はい!',
+                            cancelButtonText: "滅ぼす!",
                             buttonsStyling: false
                         }).then((result) => {
                             var hour = $('#hour').val();
@@ -308,7 +312,7 @@
                             $.ajax({
                                 url: "{{ route('project.update', '') }}" +
                                     '/' + id,
-                                method: 'PUT',
+                                method: 'POST',
                                 dataType: 'json',
                                 data: {
                                     hour,
@@ -320,7 +324,7 @@
                                     arg.event.setExtendedProp('hour',
                                         response.hour);
 
-                                    swal("Good job!", "Update time!",
+                                    swal("完了!", "更新されたジョブ内容!",
                                         "success");
                                     refreshTime(arg);
                                 },
@@ -334,7 +338,7 @@
                 },
                 datesSet: function(arg) {
                     refreshTime();
-                    
+
                 },
             });
 
@@ -345,7 +349,7 @@
                 var currentView = calendar.view;
                 var monthView = calendar.view.type === 'dayGridMonth';
                 if (monthView) {
-                    var month = (calendar.view.currentStart).getMonth()+1;
+                    var month = (calendar.view.currentStart).getMonth() + 1;
                     var currentStart = currentView.currentStart;
                     var currentEnd = currentView.currentEnd;
                     totalHours = calculateTotalHours(currentStart, currentEnd);
@@ -356,11 +360,10 @@
             }
 
             function calculateTotalHours(start, end) {
-                var events = calendar.getEvents(); // Lấy danh sách sự kiện hiện tại
+                var events = calendar.getEvents();
                 var total = 0;
                 events.forEach(function(event) {
                     if (event.extendedProps.hour) {
-                        // Kiểm tra sự kiện có trong khoảng thời gian của tháng hiện tại không
                         if (event.start >= start && event.end <= end) {
                             total += parseInt(event.extendedProps.hour);
                         }

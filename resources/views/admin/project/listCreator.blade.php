@@ -139,7 +139,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{ $creators->links() }}
+                                    {{ $creators->appends(request()->query())->links('pagination::bootstrap-4') }}
                                 </div>
                             </div>
                             <!-- end content-->

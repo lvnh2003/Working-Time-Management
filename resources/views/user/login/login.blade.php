@@ -1,9 +1,9 @@
 @extends('user.layout.main')
 @push('css')
     <style>
-        body{
-        overflow-y: hidden
-       }
+        body {
+            overflow-y: hidden
+        }
     </style>
 @endpush
 @section('content')
@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                        <form method="POST" action="{{route('loginAction')}}">
+                        <form method="POST" action="{{ route('loginAction') }}">
                             @csrf
                             <div class="card card-login">
                                 <div class="card-header text-center" data-background-color="rose">
@@ -31,10 +31,10 @@
                                     </div>
                                 </div>
                                 <p class="category text-center">
-                                    <a  href="{{route('signup')}}">
+                                    <a href="{{ route('signup') }}">
                                         又はサインアップ
                                     </a>
-                                    
+
                                 </p>
                                 <div class="card-content">
                                     <div class="input-group">
@@ -46,9 +46,6 @@
                                             <input type="email" class="form-control" name="email">
                                             <span class="material-input"></span>
                                         </div>
-                                        @error('email')
-                                        <div class="text-danger text-center">{{ $message }}</div>
-                                    @enderror
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon">
@@ -59,17 +56,11 @@
                                             <input type="password" class="form-control" name="password">
                                             <span class="material-input"></span>
                                         </div>
-                                        @error('password')
-                                        <div class="text-danger text-center">{{ $message }}</div>
-                                    @enderror
                                     </div>
                                 </div>
                                 <div class="footer text-center">
                                     <button type="submit" class="btn btn-rose btn-simple btn-wd btn-lg">ログイン</button>
                                 </div>
-                                @error('errorLogin')
-                                    <div class="text-danger text-center">{{ $message }}</div>
-                                @enderror
                             </div>
                         </form>
                     </div>
@@ -79,3 +70,18 @@
         <div class="full-page-background" style="background-image: url(../../assets/img/login.jpeg) "></div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function() {
+            @if (session()->has('success'))
+                demo.showNotification('top', 'right', 'success', "{!! session()->get('success') !!}");
+            @endif
+            @if (session()->has('error'))
+                demo.showNotification('top', 'right', 'warning', "{!! session()->get('error') !!}");
+            @endif
+            @if ($errors->any())
+            demo.showNotification('top', 'right', 'warning', "{!! $errors->all()[0] !!}");
+            @endif
+        })
+    </script>
+@endpush

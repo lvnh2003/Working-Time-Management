@@ -1,27 +1,28 @@
 @extends('user.layout.main')
 @push('css')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<style>
-    .select2-container--default .select2-selection--single{
-        border: 0;
-        border-bottom: 1px solid #D2D2D2;
-      
-        border-radius: 0
-    }
-    .selection
-    {
-        padding-bottom: 10px !important;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        margin-left: -6px
-    }
-</style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--single {
+            border: 0;
+            border-bottom: 1px solid #D2D2D2;
+
+            border-radius: 0
+        }
+
+        .selection {
+            padding-bottom: 10px !important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            margin-left: -6px
+        }
+    </style>
 @endpush
 @section('content')
     <div class="full-page lock-page" filter-color="black" data-image="../../assets/img/lock.jpeg">
         <!--   you can change the color of the filter page using: data-color="blue | green | orange | red | purple" -->
         <div class="content">
-            <form method="POST" action="{{route('admin.project.store')}}">
+            <form method="POST" action="{{ route('admin.project.store') }}">
                 @csrf
                 <div class="card card-profile">
                     <div class="card-avatar">
@@ -41,25 +42,25 @@
                                 <select class="form-control" name="idClient" id="select-name">
                                     <option disabled="" selected="" value="0"></option>
                                     @foreach ($clients as $client)
-                                         <option value="{{$client->id}}">{{$client->getUser->name}}</option>   
+                                        <option value="{{ $client->id }}">{{ $client->getUser->name }}</option>
                                     @endforeach
                                 </select>
-                            <span class="material-input"></span></div>
+                                <span class="material-input"></span>
+                            </div>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <i class="material-icons">edit</i>
                             </span>
                             <div class="form-group label-floating is-empty">
-                                <label class="control-label" >プロジェクト名</label>
+                                <label class="control-label">プロジェクト名</label>
                                 <input name="name" type="text" class="form-control" autocomplete="off">
                                 <span class="material-input"></span>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <a type="button" class="btn btn-warning btn-round"
-                            href="{{ route('admin.customer') }}">キャンセル</a>
+                        <a type="button" class="btn btn-warning btn-round" href="{{ route('admin.customer') }}">キャンセル</a>
                         <input type="submit" class="btn btn-success btn-round" value="登録">
 
                     </div>
@@ -77,19 +78,23 @@
         $(document).ready(function() {
             $("#select-name").select2(
                 {
-                    placeholder: 'Tìm kiếm theo tên',
+                    language: {
+                        noResults: function () {
+                        return `見つかりません...`;
+                        }
+                    }
                 }
             );
-            @if (session()->has('error'))
-                 swal("Error!", "{!! session()->get('error') !!}", "warning");
-            @endif  
             @error('name')
                 swal("Error!", "プロジェクトの名前を空白のままにしないでください", "warning");
             @enderror
-            
+            @if (session()->has('error'))
+                swal("Error!", "{!! session()->get('error') !!}", "warning");
+            @endif
 
-            
+
+
+
         });
-        
     </script>
 @endpush

@@ -51,7 +51,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="">Đăng xuất</a>
+                            <a href="{{route('logout')}}">ログアウト</a>
                         </li>
                     </ul>
                 </li>

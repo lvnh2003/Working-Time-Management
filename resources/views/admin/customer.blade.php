@@ -54,11 +54,11 @@
                                 class="material-icons">clear</i></button>
                     </div>
                     <div class="modal-body text-center">
-                        <h5>Are you sure you want to do this? </h5>
+                        <h5>削除してもよろしいですか</h5>
                     </div>
                     <div class="modal-footer text-center">
-                        <button type="button" class="btn btn-simple" data-dismiss="modal">Never mind</button>
-                        <a type="button" class="btn btn-success btn-simple" id="btnConfirm">Yes</a>
+                        <button type="button" class="btn btn-simple" data-dismiss="modal">滅ぼす</button>
+                        <a type="button" class="btn btn-success btn-simple" id="btnConfirm">はい</a>
                     </div>
                 </div>
             </div>

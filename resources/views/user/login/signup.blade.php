@@ -63,9 +63,6 @@
                                                     placeholder="クリエイター名..." name="name"
                                                     value="{{ old('name') }}"><span class="material-input"></span></div>
                                         </div>
-                                        @error('name')
-                                            <div class="text-danger text-center">{{ $message }}</div>
-                                        @enderror
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="material-icons">email</i>
@@ -74,9 +71,6 @@
                                                     placeholder="メールアドレス..." name="email"
                                                     value="{{ old('email') }}"><span class="material-input"></span></div>
                                         </div>
-                                        @error('email')
-                                            <div class="text-danger text-center">{{ $message }}</div>
-                                        @enderror
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="material-icons">lock_outline</i>
@@ -85,9 +79,6 @@
                                                     name="password" class="form-control"><span
                                                     class="material-input"></span></div>
                                         </div>
-                                        @error('password')
-                                            <div class="text-danger text-center">{{ $message }}</div>
-                                        @enderror
                                         <!-- If you want to add a checkbox to this form, uncomment this code -->
                                         {{-- <div class="checkbox">
                                             <label>
@@ -114,3 +105,15 @@
         <div class="full-page-background" style="background-image: url(../../assets/img/register.jpeg) "></div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function() {
+            @if (session()->has('success'))
+                demo.showNotification('top', 'right', 'success', "{!! session()->get('error') !!}");
+            @endif
+            @if ($errors->any())
+                demo.showNotification('top', 'right', 'warning', "{!! $errors->all()[0] !!}");
+            @endif
+        })
+    </script>
+@endpush

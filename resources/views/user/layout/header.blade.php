@@ -21,11 +21,11 @@
                         <i class="material-icons">fingerprint</i> ログイン
                     </a>
                 </li>
-                {{-- <li class="">
-                    <a href="lock.html">
-                        <i class="material-icons">lock_open</i> Lock
+                <li class="{{(Route::currentRouteName() == ('forgot') || Route::currentRouteName() == ('reset')) ? "active" : "" }}">
+                    <a href="{{route('forgot')}}">
+                        <i class="material-icons">lock_open</i> パスワードを忘れた場合
                     </a>
-                </li> --}}
+                </li>
             </ul>
         </div>
     </div>

@@ -87,7 +87,7 @@
                                                                 class="fileinput-exists">変え</span>
                                                             <input type="file" name="image" id="avatar"></span>
                                                         <br>
-                                                        <a href="#paper-kit" class="fileinput-exists"
+                                                        <a href="#paper-kit" class="fileinput-exists" id="btnDestroy"
                                                             data-dismiss="fileinput"><i class="fa fa-times"></i> 滅ぼす</a>
                                                     </div>
                                                 </div>

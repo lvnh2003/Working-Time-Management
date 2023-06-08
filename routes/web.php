@@ -30,6 +30,11 @@ Route::group(['controller' => LoginController::class], function () {
     Route::get('/signup', 'signup')->name('signup');
     Route::post('/signup', 'signupAction')->name('signupAction');
     Route::get('/active/{token}', 'active')->name('active');
+    Route::get('/logout','logout')->name('logout');
+    Route::get('/forgot','forgot')->name('forgot');
+    Route::post('/forgot','sendMail')->name('forgot.sendMail');
+    Route::get('/reset/{token}', 'reset')->name('reset');
+    Route::post('/reset/{token}', 'update')->name('forgot.reset');
 });
 Route::middleware('IsCreatorLogin')->group(function () {
     // user
@@ -77,7 +82,7 @@ Route::middleware('IsAdminLogin')->group(function () {
 
   
 
-Route::middleware('IsClient')->group(function () {
+Route::middleware('IsClientLogin')->group(function () {
     Route::group(['controller' => ClientController::class, 'as' => 'client.', 'prefix' => 'client'], function () {
         Route::get('/', 'index')->name('index');
     });

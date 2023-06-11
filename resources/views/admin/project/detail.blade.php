@@ -28,8 +28,21 @@
         .fc-list-event-title {
             width: 100%
         }
+
+        .hightlight {
+            background-color: #ff8000;
+            color: #ffffff;
+        }
+
+        .hightlight:hover {
+            background-color: #ffffff !important;
+            color: #ff8000 !important;
+        }
     </style>
 @endpush
+@section('title')
+    {{$relate->getProject->name}}
+@endsection
 @section('content')
     <div class="content">
         <div class="container-fluid">
@@ -102,7 +115,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    right: 'dayGridMonth,listWeek'
                 },
                 validRange: {
                     end: nextDate // Ngày kết thúc hợp lệ
@@ -158,13 +171,18 @@
                         type: 'info',
                         html: `
                         <div class="swal2-modal swal2-show" style="display: block; width: 200px; background: rgb(255, 255, 255);">
-                            <div class="swal2-content" style="display: block;font-weight:bold">仕事内容: <i class="text-warning"> ${arg.event.title}</i> </div>
-                            <div class="swal2-content" style="display: block;font-weight:bold">時間:  <i class="text-success"> ${arg.event.extendedProps.hour} 時</i></div>
+                            <div class="swal2-content" style="display: block;font-weight:bold">仕事内容: <b class="text-warning"> ${arg.event.title}</b> </div>
+                            <div class="swal2-content" style="display: block;font-weight:bold">時間:  <b class="text-success"> ${arg.event.extendedProps.hour}</b></div>
                         </div>`,
 
                     });
                 },
                 datesSet: function(arg) {
+                    $(".fc-event-draggable").removeClass("hightlight");
+                    $('.fc-day').css({
+                        "background-color": "",
+                        "box-shadow": ""
+                    });
                     refreshTime();
                 }
             });
@@ -206,7 +224,19 @@
             }
             // go to event wanna follow
             $(document).on('click', '#dateBtn', function() {
+                var searchedDate = moment($("#dateField").val()).format("YYYY-MM-DD");
+                $(".fc-event-draggable").removeClass("hightlight");
+                $('.fc-day').css({
+                    "background-color": "",
+                    "box-shadow": ""
+                });
                 calendar.gotoDate($("#dateField").val());
+                var eventContainer = $(".fc-day[data-date='" + searchedDate + "']");
+                eventContainer.css({
+                    "background-color": "#eee",
+                    "box-shadow": "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 0, 0, 0.4)"
+                });
+                eventContainer.find(".fc-event-draggable").addClass('hightlight');
             });
         });
     </script>

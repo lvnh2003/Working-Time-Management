@@ -42,8 +42,12 @@ class ProjectController extends Controller
             ];
         }
         // this id will be use to save new event
-        $idWork = Project_creator::where('idProject', $id)->where('idCreator', Auth::user()->idUser)->first()->id;
-        return view('user.project.index', ['events' => $events, 'id' => $idWork, 'project' => $project]);
+        $idWork = Project_creator::where('idProject', $id)->where('idCreator', Auth::user()->idUser)->first();
+        if(!$idWork)
+        {
+            return view('error.404');
+        }
+        return view('user.project.index', ['events' => $events, 'id' => $idWork->id, 'project' => $project]);
     }
     public function store(Request $request)
     {

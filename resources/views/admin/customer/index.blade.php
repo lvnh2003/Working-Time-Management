@@ -1,4 +1,7 @@
 @extends('user.layout.main')
+@section('title')
+クライアントを作り
+@endsection
 @section('content')
     <div class="full-page lock-page" filter-color="black" data-image="../../assets/img/lock.jpeg">
         <!--   you can change the color of the filter page using: data-color="blue | green | orange | red | purple" -->

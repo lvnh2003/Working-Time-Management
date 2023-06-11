@@ -6,6 +6,9 @@
         }
     </style>
 @endpush
+@section('title')
+ログイン
+@endsection
 @section('content')
     <div class="full-page login-page" filter-color="black" data-image="../../assets/img/login.jpeg">
         <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->

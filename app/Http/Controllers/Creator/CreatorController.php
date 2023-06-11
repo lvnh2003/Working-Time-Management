@@ -14,10 +14,10 @@ class CreatorController extends Controller
         $user = User::find(Auth::user()->idUser);
         return view('user.home', ['user' => $user]);
     }
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         // use ajax to update profile
-        $user = User::find($id);
+        $user = User::find(Auth::user()->idUser);
         $allData = $request->all();
         if ($request->has('image')) {
 

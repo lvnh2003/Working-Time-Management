@@ -15,6 +15,9 @@
         }
     </style>
 @endpush
+@section('title')
+サインアップ
+@endsection
 @section('content')
     <div class="full-page register-page" filter-color="black" data-image="../../assets/img/register.jpeg">
         <div class="container">

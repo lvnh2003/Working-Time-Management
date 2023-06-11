@@ -96,6 +96,10 @@ class LoginController extends Controller
                 return redirect()->route('login');
             }
         }
+        else
+        {
+            return view('error.404');
+        }
     }
     public function logout()
     {
@@ -133,6 +137,10 @@ class LoginController extends Controller
         if ($user) {
             return view('user.login.reset', ['user' => $user,'token' => $token]);
         }
+        else
+        {
+            return view('error.404');
+        }
     }
     public function update($token, Request $request)
     {
@@ -148,10 +156,17 @@ class LoginController extends Controller
             ]
         );
         $user = User::where('activeToken', $token)->first();
-
-        $user->login->update([
-            'password' => bcrypt($request->password)
-        ]);
-        return redirect()->route('login')->with('success', 'パスワードを正常に変更すると、ログインできます。');
+        if($user)
+        {
+            $user->login->update([
+                'password' => bcrypt($request->password)
+            ]);
+            return redirect()->route('login')->with('success', 'パスワードを正常に変更すると、ログインできます。');
+        }
+        else
+        {
+            return view('error.404');
+        }
+        
     }
 }

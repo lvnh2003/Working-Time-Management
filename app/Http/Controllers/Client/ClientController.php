@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use App\Models\Project_creator;
 use App\Models\Save_time;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,5 +43,28 @@ class ClientController extends Controller
 
         }
         return response()->json(['total' => $total,'totalProject'=>$totalTimeOfProject]);
+    }
+    public function update($id)
+    {
+        $project= Project::find($id);
+        if(!$project->finished)
+        {
+            $project->update(
+                [
+                    'finished'=>now(),
+                ]
+            );
+            return back()->with('success','プロジェクト'.$project->name.'のステータスが変更されました');
+        }
+        else
+        {
+            $project->update(
+                [
+                    'finished'=>null
+                ]
+            );
+            return back()->with('success','プロジェクト'.$project->name.'のステータスが変更されました');
+        }
+        
     }
 }

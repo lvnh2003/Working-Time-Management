@@ -5,6 +5,9 @@
         rel="stylesheet" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
+@section('title')
+クライアント管理
+@endsection
 @section('content')
     <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="d35d4be0-e396-b0b7-ac3a-caab03415c00">
         <div style="display:none" class="modal fade in" id="noticeModal" tabindex="-1" role="dialog"
@@ -35,7 +38,7 @@
 
                     </div>
                     <div class="modal-footer text-center">
-                        <button type="button" class="btn btn-danger btn-round" data-dismiss="modal">Close!<div
+                        <button type="button" class="btn btn-danger btn-round" data-dismiss="modal">閉める!<div
                                 class="ripple-container">
                                 <div class="ripple ripple-on ripple-out"
                                     style="left: 63.6562px; top: 13.75px; background-color: rgb(255, 255, 255); transform: scale(14.6621);">
@@ -250,13 +253,23 @@
                 dataType: 'json',
                 success: function(response) {
                     $('#myModalLabel').text(response.name);
-                    $('#link').attr('href', '{{ route('admin.project.assign', '') }}' + '/' + response
+                    if(response.finished==null) {
+                        $('#link').attr('href', '{{ route('admin.project.assign', '') }}' + '/' + response
                         .id);
+                    }
+                    else
+                    {
+                        $('#link').removeClass('btn-success').addClass('finished btn-default')
+                    }
+                  
 
                 },
                 error: function(err) {}
 
             });
+        });
+        $(document).on('click', '.finished', function() {
+            swal('通知','たぶん、このプロジェクトの管理者は終了しています。','info');
         });
         $(document).on('click', '.btnDelete', function() {
             var id = this.value;

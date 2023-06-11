@@ -5,22 +5,24 @@
                 margin: 20px auto;
                 max-width: 800px;
             }
+
             .col-md-3 {
                 margin: auto;
                 float: right;
                 margin-right: 114px;
             }
+
             .form-group {
                 position: relative;
             }
 
             /* .form-group input[type="date"] {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 16px;
-            } */
+                        width: 100%;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        font-size: 16px;
+                    } */
             h1 {
                 margin-top: 50px;
                 text-align: center;
@@ -110,6 +112,9 @@
             }
         </style>
     @endpush
+    @section('title')
+        {{Auth::user()->getUser->name}}
+    @endsection
     @section('content')
         @include('user.layout.navbar')
         <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="5debe795-bb7b-2b9a-0eff-7f7668fb62a0">
@@ -128,7 +133,7 @@
                         </span>
                     </button>
                 </div>
-                
+
                 <br>
                 <div class="project-list">
 
@@ -140,6 +145,9 @@
     @endsection
     @push('js')
         <script>
+            @if (session()->has('success'))
+                swal("成功!", "{!! session()->get('success') !!}", "success");
+            @endif
             var dateInput = $('#dateField');
             var currentDate = moment().format('YYYY-MM-DD');
             dateInput.val(currentDate);
@@ -163,8 +171,18 @@
                     // Thêm phần tử tổng thời gian vào phần tử thông tin dự án
                     var projectTime = $('<div>').addClass('total-time-' + '{{ $project->id }}').text('合計時間：' +
                         '{{ $project->getTotalTimeProject() }}');
+                    projectTime.css({
+                        'font-weight': 'bold',
+                        'font-size': '20px',
+                        'margin-top': '-10px'
+                    });
                     projectInfo.append(projectTime);
 
+                    var finishBtn = $('<a>').addClass(
+                    '{{ $project->finished ? 'btn btn-success' : 'btn btn-danger' }} ');
+                    finishBtn.attr('href', '{{ route('client.state', '') }}' + '/{{ $project->id }}')
+                    finishBtn.text('{{ $project->finished ? '続ける' : '完了' }} ');
+                    projectInfo.append(finishBtn);
                     // Tạo phần tử danh sách người dùng
                     var userList = $('<div>').addClass('users');
                     project.append(userList);
@@ -180,8 +198,10 @@
                         user.append(inputHidden);
 
                         // Thêm hình ảnh avatar vào phần tử người dùng
-                        
-                        var userAvatar = $('<img>').attr('src', '{{ $relate->getCreator->getAvatar() ? $relate->getCreator->getAvatar() : $avatar_default }}').attr('alt',
+
+                        var userAvatar = $('<img>').attr('src',
+                            '{{ $relate->getCreator->getAvatar() ? $relate->getCreator->getAvatar() : $avatar_default }}'
+                        ).attr('alt',
                             'Avatar');
                         user.append(userAvatar);
 
@@ -193,7 +213,7 @@
                         userDetail.append(userName);
                         // Thêm thời gian tổng của người dùng vào phần tử chi tiết người dùng
                         var userTotalTime = $('<span>').addClass('total-time').text(
-                            '{{ $relate->getCreator->getToTalTime($project->id) }}'+'時間');
+                            '{{ $relate->getCreator->getToTalTime($project->id) }}' + '時間');
                         userDetail.append(userTotalTime);
 
                         // Thêm phần tử chi tiết người dùng vào phần tử người dùng
@@ -231,7 +251,7 @@
                             type: 'GET',
                             dataType: 'json',
                             success: function(response) {
-                                totalTimeElement.text(response.total+'時間');
+                                totalTimeElement.text(response.total + '時間');
                                 $('.total-time-' + idProject).text('合計時間：' + response.totalProject);
                             },
                             error: function() {

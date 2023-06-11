@@ -2,6 +2,9 @@
 @push('css')
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
+@section('title')
+    {{$user->name}}
+@endsection
 @section('content')
     @include('user.layout.navbar')
     <div class="content">
@@ -199,7 +202,7 @@
                     }
 
                     $.ajax({
-                        url: "{{ route('user.update', '') }}" + '/' + {{ $user->id }},
+                        url: "{{ route('user.update') }}",
                         contentType: 'multipart/form-data',
                         cache: false,
                         method: 'POST', // Sử dụng phương thức POST thay vì PUT

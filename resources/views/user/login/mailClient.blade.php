@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Success Notification</title>
+    {{-- <title>Success Notification</title> --}}
     <style>
         /* CSS để tùy chỉnh giao diện email */
         body {

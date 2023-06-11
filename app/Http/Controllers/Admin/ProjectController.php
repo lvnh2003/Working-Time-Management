@@ -93,7 +93,7 @@ class ProjectController extends Controller
         // get all Creator is not joined before 
         $creators = User::select('*')->whereNotIn('id', $idCreator_exist)->whereHas('login', function ($query) {
             $query->where('role', 1)->where('isActive', 1);
-        })->paginate(3);
+        })->get();
         return view('admin.project.listCreator', ['creators' => $creators, 'id' => $id]);
     }
     public function assignCreator(Request $request, $id)

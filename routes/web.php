@@ -40,7 +40,7 @@ Route::middleware('IsCreatorLogin')->group(function () {
     // user
     Route::group(['controller' => CreatorCreatorController::class],function(){
         Route::get('/', 'index')->name('home');
-        Route::post('/home/{id}', 'update')->name('user.update');
+        Route::post('/', 'update')->name('user.update');
     });
     // project
     Route::group(['controller' => ProjectController::class, 'prefix' => 'project', 'as' => 'project.'], function () {
@@ -85,6 +85,7 @@ Route::middleware('IsAdminLogin')->group(function () {
 Route::middleware('IsClientLogin')->group(function () {
     Route::group(['controller' => ClientController::class, 'as' => 'client.', 'prefix' => 'client'], function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/project/state/{id}', 'update')->name('state');
     });
 });
 

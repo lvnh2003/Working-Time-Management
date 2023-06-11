@@ -1,4 +1,7 @@
 @extends('admin.layout.main')
+@section('title')
+    全てのクリエイター
+@endsection
 @section('content')
     <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="d35d4be0-e396-b0b7-ac3a-caab03415c00">
         <div class="content">
@@ -29,7 +32,7 @@
 
                         </div>
                         <div class="modal-footer text-center">
-                            <button type="button" class="btn btn-danger btn-round" data-dismiss="modal">Close!<div
+                            <button type="button" class="btn btn-danger btn-round" data-dismiss="modal">閉める!<div
                                     class="ripple-container">
                                     <div class="ripple ripple-on ripple-out"
                                         style="left: 63.6562px; top: 13.75px; background-color: rgb(255, 255, 255); transform: scale(14.6621);">
@@ -49,28 +52,36 @@
                             <div class="card-content">
                                 <h4 class="card-title">クリエイター</h4>
                                 <div class="toolbar">
-                                    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                                    <a type="button" href="{{ route('admin.index') }}" class="btn-danger btn"
+                                    style="float:right;margin-top: -20px">
+                                    ホーム
+                                    <span class="btn-label">
+                                        <i class="material-icons">keyboard_return</i>
+                                    </span>
+                                </a>
+                                    <input type="text" id="searchInput" placeholder="検索..." class="form-control" style="width: 30%;margin-left: 20px">
+                                   
                                 </div>
+
                                 <div class="material-datatables">
                                     <div id="datatables_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <table id="datatables"
-                                                    class="table table-striped table-no-bordered table-hover dataTable dtr-inline"
-                                                    cellspacing="0" width="100%" style="width: 100%;" role="grid"
-                                                    aria-describedby="datatables_info">
+                                                    
+                                                    cellspacing="0" width="100%" style="width: 100%;">
 
                                                     <tbody>
                                                         @foreach ($creators as $creator)
                                                             <tr>
-                                                                <div class="row">
+                                                                <td class="row">
                                                                     <div class="col-md-11">
                                                                         <div class="card card-testimonial">
                                                                             <div class="card-content">
                                                                                 <div class="card-avatar">
                                                                                     <a href="#pablo">
                                                                                         <img class="img"
-                                                                                            src="{{ $creator->getAvatar() ?  $creator->getAvatar()  :  $avatar_default}}">
+                                                                                            src="{{ $creator->getAvatar() ? $creator->getAvatar() : $avatar_default }}">
                                                                                     </a>
                                                                                 </div>
                                                                                 <form
@@ -108,8 +119,8 @@
                                                                                                         <label
                                                                                                             class="label-control">時間:</label>
                                                                                                         <span>{{ \Carbon\Carbon::parse($item->created_at)->format('d日m月Y年') }}
-                                                                                                            ~
-                                                                                                            2022/11/31
+                                                                                                            <br>~
+                                                                                                            {{ $item->getProject->finished ? \Carbon\Carbon::parse($item->getProject->finished)->format('d日m月Y年') : '未完成' }}
                                                                                                         </span>
                                                                                                         <span
                                                                                                             class="material-input"></span>
@@ -130,7 +141,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </td>
                                                             </tr>
                                                         @endforeach
 
@@ -139,7 +150,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{ $creators->appends(request()->query())->links('pagination::bootstrap-4') }}
+                                    {{-- {{ $creators->appends(request()->query())->links('pagination::bootstrap-4') }}  --}}
                                 </div>
                             </div>
                             <!-- end content-->
@@ -154,7 +165,6 @@
     </div>
 @endsection
 @push('js')
-
     <!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
     {{-- <script src="{{ asset('/assets') }}/js/jquery.datatables.js"></script> --}}
     <script
@@ -191,37 +201,37 @@
                 $('#datatables').append(newThead);
             }
             table = new DataTable('#datatables', {
-            language: {
-                "sEmptyTable": "データテーブルに利用できるデータがありません",
-                "sInfo": "_TOTAL_ 件中 _START_ から _END_ まで表示",
-                "sInfoEmpty": "0 件中 0 から 0 まで表示",
-                "sInfoFiltered": "（全 _MAX_ 件より抽出）",
-                "sInfoPostFix": "",
-                "sInfoThousands": ",",
-                "sLengthMenu": "_MENU_ 件表示",
-                "sLoadingRecords": "ローディング...",
-                "sProcessing": "処理中...",
-                "sSearch": "検索:",
-                "sZeroRecords": "一致するレコードがありません",
-                "oPaginate": {
-                    "sFirst": "最初",
-                    "sLast": "最後",
-                    "sNext": "次",
-                    "sPrevious": "前"
-                },
-                "oAria": {
-                    "sSortAscending": ": 昇順でソート",
-                    "sSortDescending": ": 降順でソート"
-                },
-                "select": {
-                    "rows": {
-                        "_": "%d 件のレコードが選択されています",
-                        "0": "",
-                        "1": "1 件のレコードが選択されています"
+                language: {
+                    "sEmptyTable": "データテーブルに利用できるデータがありません",
+                    "sInfo": "_TOTAL_ 件中 _START_ から _END_ まで表示",
+                    "sInfoEmpty": "0 件中 0 から 0 まで表示",
+                    "sInfoFiltered": "（全 _MAX_ 件より抽出）",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "_MENU_ 件表示",
+                    "sLoadingRecords": "ローディング...",
+                    "sProcessing": "処理中...",
+                    "sSearch": "検索:",
+                    "sZeroRecords": "一致するレコードがありません",
+                    "oPaginate": {
+                        "sFirst": "最初",
+                        "sLast": "最後",
+                        "sNext": "次",
+                        "sPrevious": "前"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 昇順でソート",
+                        "sSortDescending": ": 降順でソート"
+                    },
+                    "select": {
+                        "rows": {
+                            "_": "%d 件のレコードが選択されています",
+                            "0": "",
+                            "1": "1 件のレコードが選択されています"
+                        }
                     }
-                }
-            },
-                
+                },
+
                 responsive: true,
                 processing: true,
                 serverSide: true,
@@ -247,7 +257,7 @@
                         data: 'detail',
                         name: 'detail',
                         render: function(data) {
-                            return `<a href="${data}" class="btn btn-success"> Detail </a>`
+                            return `<a href="${data}" class="btn btn-success"> ディテール </a>`
                         }
                     }
                 ],
@@ -263,10 +273,27 @@
                     $('#myModalLabel').text(response.name);
                 },
                 error: function(err) {
-                    swal('error',err.message,'error');
+                    swal('error', err.message, 'error');
                 }
 
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+          // Lắng nghe sự kiện khi người dùng nhập vào trường tìm kiếm
+          $('#searchInput').on('input', function() {
+            var searchText = $(this).val().toLowerCase();
+            // Lặp qua tất cả các hàng trong bảng và ẩn hiện dựa trên kết quả tìm kiếm
+            $('#datatables tbody tr').each(function() {
+              var name = $(this).find('.card-description').text().toLowerCase();    
+              if (name.includes(searchText)) {
+                $(this).show();
+              } else {
+                $(this).hide();
+              }
+            });
+          });
+        });
+      </script>
 @endpush

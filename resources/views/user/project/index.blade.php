@@ -11,7 +11,6 @@
             height: 100px;
             width: 100%;
         }
-
         .control-label {
             position: relative;
             float: left;
@@ -28,8 +27,21 @@
         .fc-list-event-title {
             width: 100%
         }
+
+        .hightlight {
+            background-color: #ff8000;
+            color: #ffffff;
+        }
+
+        .hightlight:hover {
+            background-color: #ffffff !important;
+            color: #ff8000 !important;
+        }
     </style>
 @endpush
+@section('title')
+{{ $project->name }}  
+@endsection
 @section('content')
     @include('user.layout.navbar')
     <div class="content">
@@ -103,7 +115,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    right: 'dayGridMonth,listWeek'
                 },
                 validRange: {
                     end: nextDate // Ngày kết thúc hợp lệ
@@ -353,9 +365,21 @@
 
                 },
                 datesSet: function(arg) {
+                    $(".fc-event-draggable").removeClass("hightlight");
+                    $('.fc-day').css({
+                        "background-color": "",
+                        "box-shadow": ""
+                    });
                     refreshTime();
 
                 },
+                selectAllow: function(selectInfo) {
+                    var selectedDate = selectInfo.startStr;
+                    var eventExists = times.some(function(event) {
+                        return moment(event.start).format('YYYY-MM-DD') == selectedDate;
+                    });
+                    return !eventExists;
+                }
             });
 
             calendar.render();
@@ -391,7 +415,20 @@
             }
             // go to event wanna follow
             $(document).on('click', '#dateBtn', function() {
+                var searchedDate = moment($("#dateField").val()).format("YYYY-MM-DD");
+                $(".fc-event-draggable").removeClass("hightlight");
+                $('.fc-day').css({
+                    "background-color": "",
+                    "box-shadow": ""
+                });
                 calendar.gotoDate($("#dateField").val());
+                var eventContainer = $(".fc-day[data-date='" + searchedDate + "']");
+                eventContainer.css({
+                    "background-color": "#eee",
+                    "box-shadow": "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 0, 0, 0.4)"
+                });
+                eventContainer.find(".fc-event-draggable").addClass('hightlight');
+
             });
         });
     </script>

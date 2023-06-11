@@ -11,6 +11,9 @@
         }
     </style>
 @endpush
+@section('title')
+クリエイター管理  
+@endsection
 @section('content')
     <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="d35d4be0-e396-b0b7-ac3a-caab03415c00">
         <div class="content">

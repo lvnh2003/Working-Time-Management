@@ -8,7 +8,9 @@ use App\Models\Project;
 use App\Models\Project_creator;
 use App\Models\Save_time;
 use App\Models\User;
+use App\Notifications\AdminCreateProject;
 use App\Notifications\AssignNewProject;
+use App\Notifications\RemoveProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Yajra\DataTables\Facades\DataTables;
@@ -30,15 +32,15 @@ class ProjectController extends Controller
         if ($project_name_exist) {
             return back()->with('error', 'このプロジェクト名は使用されました');
         }
-
         $request->validate(
             [
-                'idClient' => 'bail| required',
+                'idClient' => 'bail|required',
                 'name' => 'bail|required'
             ]
         );
         $project = new Project();
-        $project->create($request->all());
+        $data = $project->create($request->all());
+        $data->getClient->notify(new AdminCreateProject($data));
         return redirect()->route('admin.customer');
     }
     public function detail($idProject, $idcreator)
@@ -105,19 +107,18 @@ class ProjectController extends Controller
             'idCreator' => $request->idCreator,
         ]);
         if ($data) {
-            $notification = new AssignNewProject($data->getProject);
-            $notification->idProject = $data->getProject->id;
-            Notification::send($data->getCreator, $notification);
+            $data->getCreator->notify(new AssignNewProject($data->getProject));
         }
         return redirect()->route('admin.customer')->with('success', 'タスクを正常に割り当てる');
     }
     public function destroy($id)
     {
         $project = Project::find($id);
+        $project->getClient->notify(new RemoveProject($project));
         if ($project) {
             $project->delete();
-            return response()->json(['success' => 'Deleted ' . $project->name, 'id' => $project->id]);
+            return response()->json(['success' => '削除された ' . $project->name, 'id' => $project->id]);
         }
-        return response()->json(['error' => 'Project not found'], 404);
+        return response()->json(['error' => 'プロジェクトが検索がありません'], 404);
     }
 }

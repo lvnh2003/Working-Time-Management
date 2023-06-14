@@ -5,11 +5,10 @@ namespace App\Notifications;
 use App\Models\Project;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AssignNewProject extends Notification
+class RemoveProject extends Notification
 {
     use Queueable;
     public $project;
@@ -56,4 +55,3 @@ class AssignNewProject extends Notification
         ];
     }
 }
-

@@ -3,7 +3,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
 @section('title')
-    {{$user->name}}
+    {{ $user->name }}
 @endsection
 @section('content')
     @include('user.layout.navbar')
@@ -112,7 +112,7 @@
                                                 <span class="input-group-addon">
                                                     <i class="material-icons">email</i>
                                                 </span>
-                                                
+
                                                 <div class="form-group label-floating ">
 
                                                     <input name="email" type="email" class="form-control"
@@ -143,26 +143,40 @@
                                     <table class="table table-hover">
                                         <thead class="text-warning">
                                             <tr>
-                                                
+
                                                 <th>プロジェクト名</th>
                                                 <th>会社名</th>
                                                 <th>合計時間</th>
+                                                <th>条件</th>
                                                 <th>アクション</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($user->getProjectOfCreator as $relate)
-                                                
-                                            
-                                            <tr>
-                                                
-                                                <td>{{$relate->getProject->name}}</td>
-                                                <td>{{$relate->getProject->getClient->name}}</td>
-                                                <td>{{$relate->getTime()}}</td>
-                                                <td>
-                                                    <a href="{{route('project.index',$relate->getProject->id)}}" class="btn btn-success">ディテール</a>
-                                                </td>
-                                            </tr>
+                                                <tr>
+
+                                                    <td>{{ $relate->getProject->name }}</td>
+                                                    <td>{{ $relate->getProject->getClient->name }}</td>
+                                                    <td>{{ $relate->getTime() }}</td>
+                                                    <td >
+                                                        @if ($relate->getProject->finished)
+                                                        終わった
+                                                        <i class="material-icons text-danger" style="vertical-align: middle">
+                                                            toggle_off
+                                                        </i>
+                                                        @else
+                                                        進行中
+                                                        <i class="material-icons text-success" style="vertical-align: middle">
+                                                            toggle_on
+                                                        </i> 
+                                                        @endif
+                                                        
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('project.index', $relate->getProject->id) }}"
+                                                            class="btn btn-success">ディテール</a>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -170,11 +184,11 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
+
+
                 </div>
                 <!-- wizard container -->
-                
+
             </div>
         </div>
         <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
@@ -211,7 +225,13 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            swal("Good job!", "Update profile!", "success");
+                            swal({
+                                title: "完了!",
+                                text: "プロフィールは更新した!",
+                                type: "success",
+                                confirmButtonText: "はい"
+                            })
+
                         },
                         error: function(response) {
                             // Xử lý lỗi (nếu có)
@@ -222,4 +242,3 @@
             // Lắng nghe sự kiện khi người dùng chọn hình ảnh
         </script>
     @endpush
-  

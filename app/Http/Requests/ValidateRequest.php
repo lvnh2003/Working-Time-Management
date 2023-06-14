@@ -22,6 +22,7 @@ class ValidateRequest extends FormRequest
     public function rules()
     {
         return [
+            'name'=>'bail|required',
             'email' => 'bail|required|email',
             'password' => 'bail|required|min:4',
             'isActive' => ''

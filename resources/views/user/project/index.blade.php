@@ -11,6 +11,7 @@
             height: 100px;
             width: 100%;
         }
+
         .control-label {
             position: relative;
             float: left;
@@ -40,7 +41,7 @@
     </style>
 @endpush
 @section('title')
-{{ $project->name }}  
+    {{ $project->name }}
 @endsection
 @section('content')
     @include('user.layout.navbar')
@@ -52,6 +53,11 @@
                     {{ $project->getClient->name }}
 
                 </p>
+                @if ($project->finished)
+                    <b class="text-danger">終わった</b>
+                @else
+                 <b class="text-success">進行中</b>
+                @endif
             </div>
 
             <div class="row">
@@ -102,7 +108,12 @@
 
         var dateInput = $('#dateField');
         var currentDate = moment().format('YYYY-MM-DD');
-        var nextDate = moment(currentDate).add(1, 'days').format('YYYY-MM-DD');
+        var nextDate =
+            @if ($project->finished)
+                moment("{{ $project->finished }}").add(1, 'days').format('YYYY-MM-DD');
+            @else
+                moment(currentDate).add(1, 'days').format('YYYY-MM-DD');
+            @endif
         dateInput.val(currentDate);
         var times = @json($events);
         var totalHour = $('#totalHour');
@@ -122,7 +133,11 @@
                 },
                 locale: 'ja',
                 initialView: 'dayGridMonth',
-                editable: true,
+                editable: @if ($project->finished)
+                    false
+                @else
+                    true
+                @endif,
                 selectable: true, // allow "more" link when too many events
                 expandRows: true,
                 events: times,
@@ -211,8 +226,12 @@
                                     'start': response.start,
                                     'end': response.end,
                                 })
-
-                                swal("完了!", "作品内容を追加!", "success");
+                                swal({
+                                    title: "完了!",
+                                    text: "作品内容を追加!",
+                                    type: "success",
+                                    confirmButtonText: "はい"
+                                })
                                 refreshTime();
                             },
                             error: function(xhr, status, error) {
@@ -223,7 +242,12 @@
                                         '</span> <br>';
                                 }
                                 errorList += '</div>';
-                                swal("過ち", errorList, "error");
+                                swal({
+                                    title: "過ち",
+                                    text: errorList,
+                                    type: "error",
+                                    confirmButtonText: "はい"
+                                })
                             },
                         })
                     }).catch((error) => {
@@ -246,17 +270,41 @@
                             end_date
                         },
                         success: function(response) {
-                            swal("完了!", "更新されたジョブ内容!", "success");
+                            swal({
+                                title: "完了!",
+                                text: "更新されたジョブ内容!",
+                                type: "success",
+                                confirmButtonText: "はい"
+                            })
                             refreshTime();
                         },
                         error: function(error) {
-                            swal("Error!", error, "error");
+                            swal({
+                                title: "過ち!",
+                                text: error.message,
+                                type: "error",
+                                confirmButtonText: "はい"
+                            })
                         },
                     });
 
                 },
 
                 eventClick: function(arg) {
+                    @if ($project->finished)
+                        swal({
+                            title: "告知",
+                            html: `
+                        <div class="swal2-modal swal2-show" style="display: block; width: 200px; background: rgb(255, 255, 255);">
+                            <div class="swal2-content" style="display: block;font-weight:bold">仕事内容: <b class="text-warning"> ${arg.event.title}</b> </div>
+                            <div class="swal2-content" style="display: block;font-weight:bold">時間:  <b class="text-success"> ${arg.event.extendedProps.hour}</b></div>
+                        </div>
+                        <br>
+                        <p style='font-size:12px'>(このプロジェクトを終わりました。見ることしかできません。)</p>`,
+                            type: "info",
+                            confirmButtonText: "はい"
+                        })
+                    @else
                     var id = arg.event.id;
                     swal({
                         type: 'question',
@@ -294,8 +342,12 @@
                                 dataType: 'json',
                                 success: function(response) {
                                     arg.event.remove();
-                                    swal("完了!", "削除された作業内容!",
-                                        "success");
+                                    swal({
+                                        title: "完了!",
+                                        text: "削除された作業内容!",
+                                        type: "success",
+                                        confirmButtonText: "はい"
+                                    })
                                     refreshTime();
                                 },
                                 error: function(error) {
@@ -342,9 +394,12 @@
                                         .title);
                                     arg.event.setExtendedProp('hour',
                                         response.hour);
-
-                                    swal("完了!", "更新されたジョブ内容!",
-                                        "success");
+                                    swal({
+                                        title: "完了!",
+                                        text: "更新されたジョブ内容!",
+                                        type: "success",
+                                        confirmButtonText: "はい"
+                                    })
                                     refreshTime();
                                 },
                                 error: function(xhr, status, error) {
@@ -357,11 +412,18 @@
                                             '</span> <br>';
                                     }
                                     errorList += '</div>';
-                                    swal("過ち", errorList, "error");
+                                    swal({
+                                        title: "過ち",
+                                        text: errorList,
+                                        type: "error",
+                                        confirmButtonText: "はい"
+                                    })
+
                                 },
                             });
                         })
                     })
+                    @endif
 
                 },
                 datesSet: function(arg) {
@@ -374,11 +436,21 @@
 
                 },
                 selectAllow: function(selectInfo) {
-                    var selectedDate = selectInfo.startStr;
-                    var eventExists = times.some(function(event) {
-                        return moment(event.start).format('YYYY-MM-DD') == selectedDate;
-                    });
-                    return !eventExists;
+                    @if ($project->finished)
+                        swal({
+                            title: "告知",
+                            text: "このプロジェクトを終わりました。労働時間に記入ができません。",
+                            type: "info",
+                            confirmButtonText: "はい"
+                        })
+                    @else
+                        var selectedDate = selectInfo.startStr;
+                        var eventExists = times.some(function(event) {
+                            return moment(event.start).format('YYYY-MM-DD') == selectedDate;
+                        });
+                        return !eventExists;
+                    @endif
+
                 }
             });
 

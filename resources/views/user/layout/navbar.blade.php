@@ -13,7 +13,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"> クライアントの作成 </a>
+            <a class="navbar-brand" href="#">   プロフィール </a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -30,19 +30,23 @@
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="width:400px;padding:10px">
                         @auth
+                            
+                         
                             @foreach (Auth::user()->getUser->notifications as $notification)
-                                <li style="margin: 5px;background-color:
+                                {{-- <li style="margin: 5px;background-color:
                                 {{(!$notification->read_at)?'rgb(231, 231, 231)':'white' }} ">
                                     <a href="{{route('project.index.notification',['id'=>$notification->data['project']['id'],'idNotification'=>$notification->id])}}">{{Auth::user()->getUser->name .'さんは'.$notification->data['project']['name']}} にアサインしました</a>
-                                </li>
+                                </li> --}}
+                                @include('user.layout.notifications.'.class_basename($notification->type))
                             @endforeach
                         @endauth
                                 
 
 
                     </ul>
+                 
                 </li>
                 <li class="dropdown"> 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">

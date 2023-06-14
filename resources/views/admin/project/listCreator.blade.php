@@ -52,24 +52,23 @@
                             <div class="card-content">
                                 <h4 class="card-title">クリエイター</h4>
                                 <div class="toolbar">
-                                    <a type="button" href="{{ route('admin.index') }}" class="btn-danger btn"
-                                    style="float:right;margin-top: -20px">
-                                    ホーム
-                                    <span class="btn-label">
-                                        <i class="material-icons">keyboard_return</i>
-                                    </span>
-                                </a>
-                                    <input type="text" id="searchInput" placeholder="検索..." class="form-control" style="width: 30%;margin-left: 20px">
-                                   
+                                    <a type="button" href="{{ route('admin.customer') }}" class="btn-danger btn"
+                                        style="float:right;margin-top: -20px">
+                                        ホーム
+                                        <span class="btn-label">
+                                            <i class="material-icons">keyboard_return</i>
+                                        </span>
+                                    </a>
+                                    <input type="text" id="searchInput" placeholder="検索..." class="form-control"
+                                        style="width: 30%;margin-left: 20px">
+
                                 </div>
 
                                 <div class="material-datatables">
                                     <div id="datatables_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <table id="datatables"
-                                                    
-                                                    cellspacing="0" width="100%" style="width: 100%;">
+                                                <table id="datatables" cellspacing="0" width="100%" style="width: 100%;">
 
                                                     <tbody>
                                                         @foreach ($creators as $creator)
@@ -273,7 +272,13 @@
                     $('#myModalLabel').text(response.name);
                 },
                 error: function(err) {
-                    swal('error', err.message, 'error');
+                    swal({
+                        title: "過ち!",
+                        text: err.message,
+                        type: "error",
+                        confirmButtonText: "はい"
+                    })
+
                 }
 
             });
@@ -281,19 +286,19 @@
     </script>
     <script>
         $(document).ready(function() {
-          // Lắng nghe sự kiện khi người dùng nhập vào trường tìm kiếm
-          $('#searchInput').on('input', function() {
-            var searchText = $(this).val().toLowerCase();
-            // Lặp qua tất cả các hàng trong bảng và ẩn hiện dựa trên kết quả tìm kiếm
-            $('#datatables tbody tr').each(function() {
-              var name = $(this).find('.card-description').text().toLowerCase();    
-              if (name.includes(searchText)) {
-                $(this).show();
-              } else {
-                $(this).hide();
-              }
+            // Lắng nghe sự kiện khi người dùng nhập vào trường tìm kiếm
+            $('#searchInput').on('input', function() {
+                var searchText = $(this).val().toLowerCase();
+                // Lặp qua tất cả các hàng trong bảng và ẩn hiện dựa trên kết quả tìm kiếm
+                $('#datatables tbody tr').each(function() {
+                    var name = $(this).find('.card-description').text().toLowerCase();
+                    if (name.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
             });
-          });
         });
-      </script>
+    </script>
 @endpush

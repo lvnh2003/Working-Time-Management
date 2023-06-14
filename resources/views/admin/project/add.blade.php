@@ -79,20 +79,36 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#select-name").select2(
-                {
-                    language: {
-                        noResults: function () {
+            $("#select-name").select2({
+                language: {
+                    noResults: function() {
                         return `見つかりません...`;
-                        }
                     }
                 }
-            );
+            });
             @error('name')
-                swal("エラー!", "プロジェクトの名前を空白のままにしないでください", "warning");
+                swal({
+                    title: "過ち!",
+                    text: "プロジェクトの名前を空白のままにしないでください",
+                    type: "warning",
+                    confirmButtonText: "はい"
+                })
+            @enderror
+            @error('idClient')
+                swal({
+                    title: "過ち!",
+                    text: "クライアントを選択してください",
+                    type: "warning",
+                    confirmButtonText: "はい"
+                })
             @enderror
             @if (session()->has('error'))
-                swal("エラー!", "{!! session()->get('error') !!}", "warning");
+                swal({
+                    title: "過ち!",
+                    text: "{!! session()->get('error') !!}",
+                    type: "warning",
+                    confirmButtonText: "はい"
+                })
             @endif
         });
     </script>

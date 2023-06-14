@@ -52,10 +52,15 @@
                     {{ $relate->getProject->getClient->name }}
 
                 </p>
+                @if ($relate->getProject->finished)
+                    <b class="text-danger">終わった</b>
+                @else
+                 <b class="text-success">進行中</b>
+                @endif
             </div>
 
             <div class="row">
-                <a type="button" href="{{ route('admin.index') }}" class="btn-danger btn"
+                <a type="button" href="{{Auth::user()->role==0 ? route('admin.customer') : route('client.index')}} " class="btn-danger btn"
                     style="float: left;margin-left: 125px">
                     ホーム
                     <span class="btn-label">
@@ -103,7 +108,12 @@
         });
         var dateInput = $('#dateField');
         var currentDate = moment().format('YYYY-MM-DD');
-        var nextDate = moment(currentDate).add(1, 'days').format('YYYY-MM-DD');
+        var nextDate =
+            @if ($relate->getProject->finished)
+                moment("{{ $relate->getProject->finished }}").add(1, 'days').format('YYYY-MM-DD');
+            @else
+                moment(currentDate).add(1, 'days').format('YYYY-MM-DD');
+            @endif
         dateInput.val(currentDate);
         var times = @json($events);
         var totalHour = $('#totalHour');
@@ -122,9 +132,9 @@
                 },
                 locale: 'ja',
                 initialView: 'dayGridMonth',
-                editable: true,
-                selectable: true, // allow "more" link when too many events
-                expandRows: true,
+                editable: false,
+                selectable: false, // allow "more" link when too many events
+                expandRows: false,
                 eventLimit: false,
                 events: times,
                 eventContent: function(arg) {

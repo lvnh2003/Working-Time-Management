@@ -86,6 +86,8 @@ Route::middleware('IsClientLogin')->group(function () {
     Route::group(['controller' => ClientController::class, 'as' => 'client.', 'prefix' => 'client'], function () {
         Route::get('/', 'index')->name('index');
         Route::get('/project/state/{id}', 'update')->name('state');
+        Route::get('/project/detail/{idProject}/{idCreator}', 'detail')->name('project.detail');
+        Route::get('/notifications/{id}','maskAsRead')->name('read');
     });
 });
 

@@ -4,6 +4,7 @@
             .container {
                 margin: 20px auto;
                 max-width: 800px;
+                height: auto;
             }
 
             .col-md-3 {
@@ -17,12 +18,12 @@
             }
 
             /* .form-group input[type="date"] {
-                        width: 100%;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                        font-size: 16px;
-                    } */
+                            width: 100%;
+                            padding: 10px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                            font-size: 16px;
+                        } */
             h1 {
                 margin-top: 50px;
                 text-align: center;
@@ -113,11 +114,11 @@
         </style>
     @endpush
     @section('title')
-        {{Auth::user()->getUser->name}}
+        {{ Auth::user()->getUser->name }}
     @endsection
     @section('content')
         @include('user.layout.navbar')
-        <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="5debe795-bb7b-2b9a-0eff-7f7668fb62a0">
+        <div class="">
 
             <div class="container">
                 <h2 class="text-center">プロジェクトリスト</h2>
@@ -146,7 +147,12 @@
     @push('js')
         <script>
             @if (session()->has('success'))
-                swal("成功!", "{!! session()->get('success') !!}", "success");
+                swal({
+                    title: "成功!",
+                    text: "{!! session()->get('success') !!}",
+                    type: "success",
+                    confirmButtonText: "はい"
+                })
             @endif
             var dateInput = $('#dateField');
             var currentDate = moment().format('YYYY-MM-DD');
@@ -179,7 +185,7 @@
                     projectInfo.append(projectTime);
 
                     var finishBtn = $('<a>').addClass(
-                    '{{ $project->finished ? 'btn btn-success' : 'btn btn-danger' }} ');
+                        '{{ $project->finished ? 'btn btn-success' : 'btn btn-danger' }} ');
                     finishBtn.attr('href', '{{ route('client.state', '') }}' + '/{{ $project->id }}')
                     finishBtn.text('{{ $project->finished ? '続ける' : '完了' }} ');
                     projectInfo.append(finishBtn);
@@ -198,12 +204,15 @@
                         user.append(inputHidden);
 
                         // Thêm hình ảnh avatar vào phần tử người dùng
-
+                        var detail = $('<a>').attr('href',
+                            '{{ route('client.project.detail', ['idCreator' => $relate->getCreator->id, 'idProject' => $relate->getProject->id]) }}'
+                            );
                         var userAvatar = $('<img>').attr('src',
                             '{{ $relate->getCreator->getAvatar() ? $relate->getCreator->getAvatar() : $avatar_default }}'
                         ).attr('alt',
                             'Avatar');
-                        user.append(userAvatar);
+                        detail.append(userAvatar);
+                        user.append(detail);
 
                         // Tạo phần tử chi tiết người dùng
                         var userDetail = $('<div>').addClass('detail');
@@ -229,7 +238,6 @@
 
                 $('#dateBtn').click(function() {
                     var date = $('#dateField').val();
-                    // swal("Searching","Please wait...","success");
                     demo.showSwal('auto-close', 'ちょっと待って')
                     updateTotalTime(date);
                 });

@@ -16,7 +16,7 @@
                     </div>
 
                     <div class="card-content">
-                        <h4 class="card-title">Tania Andrew</h4>
+                        <h4 class="card-title">クライアントを作り</h4>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <i class="material-icons">groups</i>
@@ -66,15 +66,43 @@
     <script>
         $(document).ready(function() {
             @if (session()->has('error'))
-                 swal("Error!", "{!! session()->get('error') !!}", "error");
-            @endif  
+                 swal(
+                    {
+                        title:"過ち!",
+                        text: "{!! session()->get('error') !!}",
+                        type: "warning",
+                        confirmButtonText: "はい"
+                    })
+                 
+            @endif
+            @error('name')
+                swal(
+                    {
+                        title:"過ち!",
+                        text: "名前を空白にすることはできません",
+                        type: "warning",
+                        confirmButtonText: "はい"
+                    })
+            @enderror
             @error('password')
-                swal("Error!", "パスワードアドレスを入力してください", "error");
+            swal(
+                    {
+                        title:"過ち!",
+                        text: "{{$message}}",
+                        type: "warning",
+                        confirmButtonText: "はい"
+                    })
             @enderror
             @error('email')
-                swal("Error!", "メールアドレスを入力してください", "error");
+                swal(
+                    {
+                        title:"過ち!",
+                        text: "メールアドレスを入力してください",
+                        type: "warning",
+                        confirmButtonText: "はい"
+                    })
             @enderror
-
+                
         });
     </script>
 @endpush

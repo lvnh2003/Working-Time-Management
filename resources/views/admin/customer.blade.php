@@ -3,10 +3,10 @@
     <link
         href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/date-1.4.1/fc-4.2.2/fh-3.3.2/r-2.4.1/rg-1.3.1/sc-2.1.1/sl-1.6.2/datatables.min.css"
         rel="stylesheet" />
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endpush
 @section('title')
-クライアント管理
+    クライアント管理
 @endsection
 @section('content')
     <div class="main-panel ps-container ps-theme-default ps-active-y" data-ps-id="d35d4be0-e396-b0b7-ac3a-caab03415c00">
@@ -95,14 +95,16 @@
                                         <div class="tab-pane active" id="pill1">
                                             <div class="row">
                                                 @foreach ($client->getUser->getProject as $project)
-                                                    <div class="col-lg-4 col-md-4 col-sm-4" id="{{'project-'.$project->id}}">
+                                                    <div class="col-lg-4 col-md-4 col-sm-4"
+                                                        id="{{ 'project-' . $project->id }}">
                                                         <div class="card card-stats">
                                                             <div class="card-header" data-background-color="blue">
                                                                 <i class="material-icons">event_note</i>
                                                             </div>
                                                             <div class="card-content">
-                                                                <p class="category">{{$project->getTotalTimeProject()}} 時間</p>
-                                                                <h3 class=  "card-title">{{ $project->name }}</h3>
+                                                                <p class="category">{{ $project->getTotalTimeProject() }} 時間
+                                                                </p>
+                                                                <h3 class="card-title">{{ $project->name }}</h3>
                                                             </div>
                                                             <div class="card-footer">
                                                                 <div class="stats">
@@ -185,35 +187,35 @@
             }
             table = new DataTable('#datatables', {
                 language: {
-                "sEmptyTable": "データテーブルに利用できるデータがありません",
-                "sInfo": "_TOTAL_ 件中 _START_ から _END_ まで表示",
-                "sInfoEmpty": "0 件中 0 から 0 まで表示",
-                "sInfoFiltered": "（全 _MAX_ 件より抽出）",
-                "sInfoPostFix": "",
-                "sInfoThousands": ",",
-                "sLengthMenu": "_MENU_ 件表示",
-                "sLoadingRecords": "ローディング...",
-                "sProcessing": "処理中...",
-                "sSearch": "検索:",
-                "sZeroRecords": "一致するレコードがありません",
-                "oPaginate": {
-                    "sFirst": "最初",
-                    "sLast": "最後",
-                    "sNext": "次",
-                    "sPrevious": "前"
-                },
-                "oAria": {
-                    "sSortAscending": ": 昇順でソート",
-                    "sSortDescending": ": 降順でソート"
-                },
-                "select": {
-                    "rows": {
-                        "_": "%d 件のレコードが選択されています",
-                        "0": "",
-                        "1": "1 件のレコードが選択されています"
+                    "sEmptyTable": "データテーブルに利用できるデータがありません",
+                    "sInfo": "_TOTAL_ 件中 _START_ から _END_ まで表示",
+                    "sInfoEmpty": "0 件中 0 から 0 まで表示",
+                    "sInfoFiltered": "（全 _MAX_ 件より抽出）",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "_MENU_ 件表示",
+                    "sLoadingRecords": "ローディング...",
+                    "sProcessing": "処理中...",
+                    "sSearch": "検索:",
+                    "sZeroRecords": "一致するレコードがありません",
+                    "oPaginate": {
+                        "sFirst": "最初",
+                        "sLast": "最後",
+                        "sNext": "次",
+                        "sPrevious": "前"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 昇順でソート",
+                        "sSortDescending": ": 降順でソート"
+                    },
+                    "select": {
+                        "rows": {
+                            "_": "%d 件のレコードが選択されています",
+                            "0": "",
+                            "1": "1 件のレコードが選択されています"
+                        }
                     }
-                }
-            },
+                },
                 responsive: true,
                 processing: true,
                 serverSide: true,
@@ -253,15 +255,16 @@
                 dataType: 'json',
                 success: function(response) {
                     $('#myModalLabel').text(response.name);
-                    if(response.finished==null) {
-                        $('#link').attr('href', '{{ route('admin.project.assign', '') }}' + '/' + response
-                        .id);
-                    }
-                    else
-                    {
+                    if (response.finished == null) {
+                        $('#link').removeClass('finished btn-default').addClass('btn-success')
+                        $('#link').attr('href', '{{ route('admin.project.assign', '') }}' + '/' +
+                            response
+                            .id);
+                    } else {
+                        $('#link').attr('href', '#');
                         $('#link').removeClass('btn-success').addClass('finished btn-default')
                     }
-                  
+
 
                 },
                 error: function(err) {}
@@ -269,7 +272,12 @@
             });
         });
         $(document).on('click', '.finished', function() {
-            swal('通知','たぶん、このプロジェクトの管理者は終了しています。','info');
+            swal({
+                title: "通知",
+                text: "おそらく、このプロジェクトマネージャーはプロジェクトを終了しました。",
+                type: 'info',
+                confirmButtonText: "はい"
+            })
         });
         $(document).on('click', '.btnDelete', function() {
             var id = this.value;
@@ -279,12 +287,22 @@
                     type: 'DELETE',
                     dataType: 'json',
                     success: function(response) {
-                        $('#project-'+response.id).remove();
+                        $('#project-' + response.id).remove();
                         $('#smallAlertModal').modal('hide');
-                        swal("Good job!", response.success,"success");
+                        swal({
+                            title: "完了!",
+                            text: response.success,
+                            type: "success",
+                            confirmButtonText: "はい"
+                        });
                     },
                     error: function(error) {
-                        swal("Nope!", response.error,"error");
+                        swal({
+                            title: "過ち!",
+                            text: response.error,
+                            type: "error",
+                            confirmButtonText: "はい"
+                        });
                     },
                 })
             });

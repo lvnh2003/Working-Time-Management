@@ -5,11 +5,11 @@ Tip 2: you can also add an image using data-image tag
 Tip 3: you can change the color of the sidebar with data-background-color="white | black"
 -->
     <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+        <a href="#" class="simple-text logo-mini">
             CT
         </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-            Creative Tim
+        <a href="#" class="simple-text logo-normal">
+            ホーム
         </a>
     </div>
     <div class="sidebar-wrapper ps-container ps-theme-default ps-active-y"

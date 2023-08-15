@@ -246,7 +246,7 @@
                     "background-color": "#eee",
                     "box-shadow": "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 0, 0, 0.4)"
                 });
-                eventContainer.find(".fc-event-draggable").addClass('hightlight');
+                eventContainer.find(".fc-event").addClass('hightlight');
             });
         });
     </script>

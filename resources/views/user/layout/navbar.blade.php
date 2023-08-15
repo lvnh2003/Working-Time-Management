@@ -30,7 +30,7 @@
                             <b class="caret"></b>
                         </p>
                     </a>
-                    <ul class="dropdown-menu" style="width:400px;padding:10px">
+                    <ul class="dropdown-menu" style="width:400px;padding:10px;max-height:400px;overflow: auto">
                         @auth
                             
                          

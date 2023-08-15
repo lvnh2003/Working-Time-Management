@@ -53,7 +53,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'title'=>'bail|required',
-            'hour'=>'bail|numeric|min:2|max:23|required'
+            'hour'=>'bail|numeric|min:1|max:23|required'
         ],
         [
             'title.required' => 'タスクの内容を入力してください',

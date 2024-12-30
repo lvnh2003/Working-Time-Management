@@ -18,14 +18,14 @@ class Project extends Model
     // this function in order to get all the creator is joined
     public function getRelate()
     {
-        return $this->hasMany(Project_creator::class, 'idProject', 'id');
+        return $this->hasMany(Project_Creator::class, 'idProject', 'id');
     }
     // total time of this project
     public function getTotalTimeProject()
     {
-        $project_creator = Project_creator::where('idProject', $this->id)->get();
+        $Project_Creator = Project_Creator::where('idProject', $this->id)->get();
         $total = 0;
-        foreach ($project_creator as $item) {
+        foreach ($Project_Creator as $item) {
             $times = Save_time::where('idWork', $item->id)->get();
             foreach ($times as $time) {
                 $total += $time->hour;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\Project;
-use App\Models\Project_creator;
+use App\Models\Project_Creator;
 use App\Models\Save_time;
 use App\Models\User;
 use App\Notifications\ChangeStateProject;
@@ -23,7 +23,7 @@ class ClientController extends Controller
     public function getTotalTimeWithDate($idUser, $idProject, $date)
     {
         // get idWork for table save_time
-        $relate = Project_creator::where('idCreator', $idUser)->where('idProject', $idProject)->first();
+        $relate = Project_Creator::where('idCreator', $idUser)->where('idProject', $idProject)->first();
         // get all columns has idWork
         $times = Save_time::where('idWork', $relate->id)->where('start_date', '<=', $date)->get();
         $total = 0;
@@ -31,10 +31,10 @@ class ClientController extends Controller
         foreach ($times as $time) {
             $total += $time->hour;
         }
-        $project_creator = Project_creator::where('idProject', $idProject)->get();
+        $Project_Creator = Project_Creator::where('idProject', $idProject)->get();
         // total tile of project
         $totalTimeOfProject = 0;
-        foreach ($project_creator as $item) {
+        foreach ($Project_Creator as $item) {
             $times = Save_time::where('idWork', $item->id)->where('start_date', '<=', $date)->get();
             foreach ($times as $time) {
                 $totalTimeOfProject += $time->hour;
@@ -75,7 +75,7 @@ class ClientController extends Controller
     public function detail($idProject, $idcreator)
     {
         // get idWork through idProject and idCreator to get all columns have idWork
-        $relate = Project_creator::where('idCreator', $idcreator)->where('idProject', $idProject)->first();
+        $relate = Project_Creator::where('idCreator', $idcreator)->where('idProject', $idProject)->first();
         $events = array();
         $times = Save_time::where('idWork', $relate->id)->get();
         foreach ($times as $time) {

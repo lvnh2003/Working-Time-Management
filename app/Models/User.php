@@ -39,12 +39,12 @@ class User extends Authenticatable
     // get all project creator is joined
     public function getProjectOfCreator()
     {
-        return $this->hasMany(Project_creator::class,'idCreator','id');
+        return $this->hasMany(Project_Creator::class,'idCreator','id');
     }
     // get total time of project creator  joined
     public function getTotalTime($idProject)
     {
-       $relate= Project_creator::where('idProject',$idProject)->where('idCreator',$this->id)->get();
+       $relate= Project_Creator::where('idProject',$idProject)->where('idCreator',$this->id)->get();
        $total=0;
        foreach($relate as $item)
        {

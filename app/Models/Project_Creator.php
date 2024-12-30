@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project_creator extends Model
+class Project_Creator extends Model
 {
     use HasFactory;
+    protected $table = 'project_creators';
     protected $fillable=['idProject','idCreator'];
     // get creator with foreign key idCreator
     public function getCreator()

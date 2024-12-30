@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Login;
 use App\Models\Project;
-use App\Models\Project_creator;
+use App\Models\Project_Creator;
 use App\Models\Save_time;
 use App\Models\User;
 use App\Notifications\AdminCreateProject;
@@ -46,7 +46,7 @@ class ProjectController extends Controller
     public function detail($idProject, $idcreator)
     {
         // get idWork through idProject and idCreator to get all columns have idWork
-        $relate = Project_creator::where('idCreator', $idcreator)->where('idProject', $idProject)->first();
+        $relate = Project_Creator::where('idCreator', $idcreator)->where('idProject', $idProject)->first();
         $events = array();
         $times = Save_time::where('idWork', $relate->id)->get();
         foreach ($times as $time) {
@@ -65,18 +65,18 @@ class ProjectController extends Controller
     public function listCreator($id)
     {
         // get all creator is joining this project
-        $list = Project_creator::where('idProject', $id)->get();
+        $list = Project_Creator::where('idProject', $id)->get();
         return  DataTables::of($list)
-            ->addColumn('progress', function (Project_creator $relate) {
+            ->addColumn('progress', function (Project_Creator $relate) {
                 return $relate->getTime();
             })
-            ->addColumn('detail', function (Project_creator $relate) {
+            ->addColumn('detail', function (Project_Creator $relate) {
                 return route('admin.project.detail', ['idProject' => $relate->idProject, 'idCreator' => $relate->idCreator]);
             })
-            ->addColumn('name', function (Project_creator $relate) {
+            ->addColumn('name', function (Project_Creator $relate) {
                 return $relate->getCreator->name;
             })
-            ->addColumn('avatar', function (Project_creator $relate) {
+            ->addColumn('avatar', function (Project_Creator $relate) {
                 return $relate->getCreator->getAvatar() ? $relate->getCreator->getAvatar() : asset('assets/img/default-avatar.png');
             })
             ->make(true);
@@ -89,7 +89,7 @@ class ProjectController extends Controller
     public function assign($id)
     {
         // get all creator is joined
-        $project_exist = Project_creator::where('idProject', $id)->get();
+        $project_exist = Project_Creator::where('idProject', $id)->get();
         // convert a array just have idCreator
         $idCreator_exist = $project_exist->pluck('idCreator');
         // get all Creator is not joined before 
@@ -101,7 +101,7 @@ class ProjectController extends Controller
     public function assignCreator(Request $request, $id)
     {
         // create a relate between creator and project
-        $pro_cre = new Project_creator();
+        $pro_cre = new Project_Creator();
         $data = $pro_cre->create([
             'idProject' => $id,
             'idCreator' => $request->idCreator,

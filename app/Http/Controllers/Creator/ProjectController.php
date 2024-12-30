@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Creator;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\Project;
-use App\Models\Project_creator;
+use App\Models\Project_Creator;
 use App\Models\Save_time;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +42,7 @@ class ProjectController extends Controller
             ];
         }
         // this id will be use to save new event
-        $idWork = Project_creator::where('idProject', $id)->where('idCreator', Auth::user()->idUser)->first();
+        $idWork = Project_Creator::where('idProject', $id)->where('idCreator', Auth::user()->idUser)->first();
         if(!$idWork)
         {
             return view('error.404');

@@ -12,6 +12,6 @@ class Save_time extends Model
     // get atributes of column has idWork
     public function getRelate()
     {
-        return $this->hasOne(Project_creator::class, 'id','idWork');
+        return $this->hasOne(Project_Creator::class, 'id','idWork');
     }
 }
